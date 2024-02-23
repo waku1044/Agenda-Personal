@@ -1,5 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
+import logo from "../assets/logo.svg";
 import "../css/login.css";
 
 const Login = () => {
@@ -11,7 +12,7 @@ const Login = () => {
       >
         <div className="d-flex justify-content-between align-items-center mx-auto mt-5 px-3 marca">
           <picture className="logo">
-            <img src="/src/assets/logo.svg" alt="imagen" className="imgLogo" />
+            <img src={logo} alt="imagen" className="imgLogo" />
           </picture>
           <h1 className="text-center py-5 text-white agency">MyAgend</h1>
         </div>
