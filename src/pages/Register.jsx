@@ -1,9 +1,9 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
 import logo from "../assets/logo.svg";
-// import "../css/login.css";
+import "../css/login.css";
 
-const Login = () => {
+const Register = () => {
   return (
     <>
       <div
@@ -20,6 +20,7 @@ const Login = () => {
           initialValues={{
             username: "",
             password: "",
+            email: "",
           }}
           onSubmit={(values) => console.log(values)}
         >
@@ -27,9 +28,20 @@ const Login = () => {
             <div className=" input-group">
               <Field
                 type="text"
-                className="form-control p-1 ps-3 w-60" 
+                className="form-control p-1 ps-3 w-60"
                 name="username"
-                placeholder="Usuario"
+                placeholder="Crea tu usuario"
+                autoComplete="off"
+              />
+              <ErrorMessage name="username" />
+            </div>
+
+            <div className=" input-group">
+              <Field
+                type="text"
+                className="form-control p-1 ps-3 w-60"
+                name="email"
+                placeholder="Email"
                 autoComplete="off"
               />
               <ErrorMessage name="username" />
@@ -39,18 +51,29 @@ const Login = () => {
               <Field
                 type="password"
                 name="password"
-                placeholder="Password"
+                placeholder="Crea tu contraseña"
                 className="form-control p-1 ps-3 w-60"
                 autoComplete="off"
               />
               <ErrorMessage name="password" />
             </div>
 
+            <div className="input-group">
+              <Field
+                type="password"
+                name="repeatpassword"
+                placeholder="Repite tu contraseña"
+                className="form-control p-1 ps-3 w-60"
+                autoComplete="off"
+              />
+              <ErrorMessage name="repeatpassword" />
+            </div>
+
             <button type="submit" className="bg-gradient-to-tr from-green-400 from-10% via-green-500 via-30% to-blue-600 to-90%  shadow-inherit	 text-dark font-semibold tracking-wide border-0 p-1 ps-3 w-60 rounded-md ">
-              Entrar
+              Registrarse
             </button>
-            <Link to="/registro" className="text-center bg-gradient-to-tl from-yellow-400 from-10%  to-pink-600 to-90% text-dark font-semibold tracking-wide rounded-md p-1 ps-3 w-60">
-              Registrate
+            <Link to="/" className="text-center text-dark link-underline link-underline-opacity-0  border-0">
+              Ya tengo cuenta
             </Link>
           </Form>
         </Formik>
@@ -59,4 +82,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
