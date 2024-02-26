@@ -27,7 +27,7 @@ const Login = () => {
             <div className=" input-group">
               <Field
                 type="text"
-                className="form-control p-1 ps-3 w-60" 
+                className="form-control p-1 ps-3 w-60 rounded-full" 
                 name="username"
                 placeholder="Usuario"
                 autoComplete="off"
@@ -40,7 +40,7 @@ const Login = () => {
                 type="password"
                 name="password"
                 placeholder="Password"
-                className="form-control p-1 ps-3 w-60"
+                className="form-control p-1 ps-3 w-60 rounded-full "
                 autoComplete="off"
               />
               <ErrorMessage name="password" />
