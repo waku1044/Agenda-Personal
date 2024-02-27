@@ -43,15 +43,12 @@ const Register = () => {
           {
             let {username, email, password} = values;
             console.log(username, email, password);
-           const res = await fetch('http://localhost:3900/api/register', {
-              method: 'POST',
-              body: JSON.stringify({username, email, password}),
-              headers: {
-                'Content-Type': 'application/json'
-              }
-            });
-            const data = await res.json();
-            console.log(data);
+           const res = await axios.post('http://localhost:3900/api/register', {
+            username,
+            email,
+            password
+           });
+           console.log(res.data.messeger);
                 
                 
               }}
@@ -115,7 +112,7 @@ const Register = () => {
               <img 
               src={showPassword ? eyeOpen : eyeClose} 
               alt="eye" 
-              className="absolute top-2 right-2" 
+              className="absolute top-2 right-2 cursor-pointer" 
               onClick={handleShowPassword} />
 
               <p className="text-red-800"><ErrorMessage name="password" className="error"/></p>
