@@ -1,9 +1,10 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import logo from "../assets/logo.svg";
+
 import  eyeOpen  from "/eyeOpen.svg";
 import eyeClose  from "/eyeClose.svg";
+import logo from "/284301.png";
 import axios from "axios";
 // import "../css/login.css";
 
@@ -21,7 +22,7 @@ const navegate = useNavigate();
       >
         <div className="flex mx-auto justify-between items-center mt-20 mb-5 w-60">
           <picture className="logo">
-            <img src={logo} alt="imagen" className="imgLogo" />
+            <img src={logo} alt="imagen" className="w-20" />
           </picture>
           <h1 className="text-3xl text-green-500 font-bold">MyAgend</h1>
         </div>
@@ -36,7 +37,15 @@ const navegate = useNavigate();
             const res = await axios.post('http://localhost:3900/api/login', {
               username,
               password
-            })
+            },
+            {
+              headers: {
+                
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+
+              }
+            }
+            )
             .then((res) => {
               console.log(res.data)
               localStorage.setItem('token', res.data.token)
@@ -44,7 +53,7 @@ const navegate = useNavigate();
               alert(res.data.messeger);
             })
             .catch((err) => {
-              console.log(err.response.data.messenger)
+              alert(err.response.data.messenger)
             })
             
           }}

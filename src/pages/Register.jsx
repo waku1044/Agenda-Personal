@@ -1,6 +1,6 @@
 import { Formik, Form, Field, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
-import logo from "../assets/logo.svg";
+import { Link, useNavigate } from "react-router-dom";
+import logo from "/284301.png";
 import { useState} from "react";
 import "../css/login.css";
 import eyeClose from '/eyeClose.svg';
@@ -13,7 +13,7 @@ const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [type, setType] = useState(false);
   
-  
+  const navegate = useNavigate();
  
   
   const handleShowPassword = ()=> {
@@ -29,7 +29,7 @@ const Register = () => {
         >
         <div className="flex mx-auto justify-between items-center mt-24 mb-5 w-60">
           <picture className="logo">
-            <img src={logo} alt="imagen" className="imgLogo" />
+            <img src={logo} alt="imagen" className="w-20" />
           </picture>
           <h1 className="text-3xl text-green-500 font-bold">MyAgend</h1>
         </div>
@@ -47,10 +47,18 @@ const Register = () => {
             username,
             email,
             password
-           });
-           console.log(res.data.messeger);
-                
-                
+           })
+           .then((res) => {
+            alert(res.data.messeger);
+            navegate('/')
+
+           })
+           .catch((err)=>{
+             res.status(400).send({
+               status: "error",
+               user: err
+             })
+           }) 
               }}
               validate = {(values) => {
                 const errors = {};
@@ -61,8 +69,11 @@ const Register = () => {
                 }
 
                 if (!(values.password == values.repeatpassword)) {
-                  errors.password = 'Las contraseñas no coinciden';
-                  
+                  errors.password = 'Las contraseñas no coinciden';  
+                }
+                
+                if(values.password.length < 4 || values.password.length > 10) {
+                  errors.password = 'Debe tener entre 4 y 10 caracteres';
                 }
               
                 if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i.test(values.email)) {
