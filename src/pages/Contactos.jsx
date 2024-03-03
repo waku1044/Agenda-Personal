@@ -2,6 +2,7 @@ import Logo from "/284301.png";
 import { useState, useEffect } from "react";
 import CardContactos from "../components/CardContactos";
 import axios from "axios";
+import Navegador from "../components/Navegador";
 
 const Contactos = () => {
 
@@ -43,12 +44,12 @@ useEffect(() => {
       </header>
       <section className="flex justify-around items-start gap-2 h-[calc(100vh-88px)] " style={{background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)"}}>
           
-         {contactos.length > 0 ? contactos.map(contact=>{
-          return <CardContactos key={contact._id} {...contact} />
-         }) : <h1 className="text-3xl text-green-500 font-bold text-center">No hay contactos</h1>}
+         
+         {/* {contactos.length  > 0 ? contactos.map((contacto)=> <CardContactos key={contacto._id} props={...contacto}/>) : <h1>No hay contactos</h1>} */}
           
       
       </section>
+      <Navegador/>
     </div>
   );
 };
