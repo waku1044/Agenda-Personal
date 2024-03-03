@@ -4,7 +4,7 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 const Agregar = ()=>{
     return (
-      <div className='bg-slate-700 w-screen h-screen flex items-center justify-center'>
+      <div className='bg-slate-700 flex items-center justify-center'>
           <Formik 
 
             initialValues = {{

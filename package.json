@@ -12,9 +12,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@fortawesome/fontawesome-svg-core": "^6.5.1",
-    "@tailwindcss/jit": "^0.1.18",
-    "autoprefixer": "^10.4.17",
+    
     "axios": "^1.6.7",
     "bootstrap": "^5.3.3",
     "formik": "^2.4.5",
