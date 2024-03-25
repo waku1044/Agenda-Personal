@@ -6,6 +6,7 @@ import "../css/login.css";
 import eyeClose from '/eyeClose.svg';
 import eyeOpen from '/eyeOpen.svg';
 import axios from "axios";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
 
 
 
@@ -41,7 +42,7 @@ const Register = () => {
           }}
           onSubmit={async (values) => 
           {
-            let {username, email, password} = values;
+            let { username, email, password } = values;
             console.log(username, email, password);
            const res = await axios.post('http://localhost:3900/api/register', {
             username,
@@ -49,8 +50,11 @@ const Register = () => {
             password
            })
            .then((res) => {
-            alert(res.data.messeger);
-            navegate('/')
+            Notify.success('Usuario creado correctamente');
+            setTimeout(()=>{
+              navegate('/')
+              
+            },2000)
 
            })
            .catch((err)=>{

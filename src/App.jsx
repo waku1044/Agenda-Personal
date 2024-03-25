@@ -5,6 +5,8 @@ import Register from './pages/Register';
 import Contactos from './pages/Contactos';
 import Perfil from './pages/Perfil';
 import Agregar from './pages/Agregar';
+import  Contacto from './pages/Contacto';
+import Editar from './pages/EditContacto';
 
 function App() {
   
@@ -22,11 +24,11 @@ function App() {
 
           
           <Route path='/contactos' element={<Contactos/>}/>
-          <Route path='/editarcontacto:id' element={<h1>Editar Contacto</h1>}/>
-          <Route path='/contacto:id' element={<h1>Ver Contacto</h1>}/>
+          <Route path='/editarcontacto/:id' element={<Editar/>}/>
+          <Route path='/contacto/:id' element={<Contacto/>}/>
 
           <Route path='/agregar' element={<Agregar/>}/>
-          <Route path='/perfil' element={<Perfil/>}/>
+          <Route path='/perfil/:id' element={<Perfil/>}/>
 
         </Routes>
       </BrowserRouter>

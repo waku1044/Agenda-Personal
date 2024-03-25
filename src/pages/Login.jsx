@@ -6,6 +6,8 @@ import  eyeOpen  from "/eyeOpen.svg";
 import eyeClose  from "/eyeClose.svg";
 import logo from "/284301.png";
 import axios from "axios";
+import { Notify } from 'notiflix/build/notiflix-notify-aio';
+import { Loading } from 'notiflix/build/notiflix-loading-aio';
 // import "../css/login.css";
 
 const Login = () => {
@@ -24,37 +26,39 @@ const navegate = useNavigate();
           <picture className="logo">
             <img src={logo} alt="imagen" className="w-20" />
           </picture>
-          <h1 className="text-3xl text-green-500 font-bold">MyAgend</h1>
+          <h1 className="text-3xl text-green-500 font-bold ms-3">PersonAgend</h1>
         </div>
         <Formik
           initialValues={{
             username: "",
             password: "",
           }}
-          onSubmit={ async (values) => 
-          {
-            let {username, password} = values;
-            const res = await axios.post('http://localhost:3900/api/login', {
-              username,
-              password
-            },
+          onSubmit={ (values) => 
             {
-              headers: {
-                'Authorization': 'Bearer ' + localStorage.getItem('token')
-
+           
+            Loading.dots('Cargando...');
+            setTimeout(async () => {
+              
+              let {username, password} = values;
+              
+              const res = await axios.post('http://localhost:3900/api/login', {
+                username,
+                password
               }
-            }
-            )
-            .then((res) => {
-              console.log(res.data)
-              localStorage.setItem('token', res.data.token)
-              navegate('/contactos')
-              alert(res.data.messeger);
-            })
-            .catch((err) => {
-              alert(err.response.data.messenger)
-            })
-            
+              )
+              .then((res) => {
+                let dataUser = res.data;
+                localStorage.setItem('data', JSON.stringify(dataUser));
+                
+                Loading.remove();
+                Notify.success(`Bienvenid@ ${dataUser.username}`)
+                navegate('/contactos')
+              })
+              .catch((err) => {
+                Loading.remove(); 
+                Notify.failure(err.response.data.messenger)
+              })
+            }, 2000)
           }}
           
           validate={(values) => {
