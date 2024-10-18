@@ -1,12 +1,13 @@
 import React from 'react';
 import {Route, Routes,BrowserRouter} from 'react-router-dom';
 import Login from './pages/Login';
-import Register from './pages/Register';
-import Contactos from './pages/Contactos';
-import Perfil from './pages/Perfil';
-import Agregar from './pages/Agregar';
-import  Contacto from './pages/Contacto';
+import Reservas from './pages/Reservas';
+// import Perfil from './pages/Perfil';
+import Agregar from './pages/AgregarReserva';
+// import  Cliente from './pages/Cliente';
+import  Clientes from './pages/Clientes';
 import Editar from './pages/EditContacto';
+import Avisar from './pages/AvisarCliente';
 
 function App() {
   
@@ -16,19 +17,21 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route exact path='/' element={<Login/>}/>
-          <Route path='/registro' element={<Register/>}/>
+          
 
           {/* Rutas de usuario solo editar / perfil */}
           
           {/* Rutas del crud de contactos */}
 
           
-          <Route path='/contactos' element={<Contactos/>}/>
-          <Route path='/editarcontacto/:id' element={<Editar/>}/>
-          <Route path='/contacto/:id' element={<Contacto/>}/>
+          <Route path='/reservas' element={<Reservas/>}/>
+          <Route path='/editarcliente/:id' element={<Editar/>}/>
+          <Route path='/clientes' element={<Clientes/>}/>
+          <Route path='/avisarcliente' element={<Avisar/>}/>
+          {/* <Route path='/cliente/:id' element={<Cliente/>}/> */}
 
-          <Route path='/agregar' element={<Agregar/>}/>
-          <Route path='/perfil/:id' element={<Perfil/>}/>
+          <Route path='/agregarreserva' element={<Agregar/>}/>
+          {/* <Route path='/perfil/:id' element={<Perfil/>}/> */}
 
         </Routes>
       </BrowserRouter>
