@@ -8,6 +8,9 @@ import Navegador from "../components/Navegador";
 
 const Reservas = () => {
   const [reservados, setReservados] = useState([]);
+  const [inicioSemana, setInicioSemana] = useState();
+  const [finSemana, setFinSemana] = useState();
+ 
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -23,6 +26,43 @@ const Reservas = () => {
       });
   }, []);
 
+
+  
+
+  useEffect(() => {
+    let hoy = new Date();
+    let actual = hoy.getDay();
+    let empiezaSemana;
+
+    // Ajustar para que el lunes sea el primer día de la semana
+    let lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
+
+    let domingo = new Date(lunes);
+    domingo.setDate(lunes.getDate() + 6); // Calcula el domingo de la misma semana
+
+    setInicioSemana(lunes.toLocaleDateString());
+    setFinSemana(domingo.toLocaleDateString());
+  },[]);
+
+  function diaDeSemana(fechaNumero) {
+    let diasDeSemana = [
+      "Domingo",
+      "Lunes",
+      "Martes",
+      "Miércoles",
+      "Jueves",
+      "Viernes",
+      "Sábado",
+    ];
+    let dia = fechaNumero.split("/")[0];
+    let mes = fechaNumero.split("/")[1];
+    let año = fechaNumero.split("/")[2];
+    let fechaAlReves = `${año}/${mes}/${dia}`;
+    let actual = new Date(fechaAlReves);
+    return diasDeSemana[actual.getDay()];
+  }
+
   return (
     <div>
       <section
@@ -32,15 +72,16 @@ const Reservas = () => {
             "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,100,100,1) 100%)",
         }}
       >
-        <h1 className="text-3xl text-center my-5 text-green-500 font-bold mx-auto ">
+        <h1 className="text-3xl text-center mt-5 text-green-500 font-bold mx-auto ">
           Reservas de esta Semana
         </h1>
-        <table class="table table-success table-bordered border-primary text-center table-striped">
-          
-            <tr class="border bg-green-300 ">
+        <p className="text-center  fs-5 font-bold text-pink-400">{inicioSemana} ___ {finSemana} </p>
+        <div className="overflow-auto">
+          <table className="table table-success table-bordered border-primary text-center table-striped">
+            <tr className="border bg-green-300 ">
               {/* <th scope="col">#</th> */}
-              <th scope='col'>Fecha</th>
-              <th scope='col'>Hora</th>
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
               <th scope="col">Lunes</th>
               <th scope="col">Martes</th>
               <th scope="col">Miercoles</th>
@@ -48,49 +89,59 @@ const Reservas = () => {
               <th scope="col">Viernes</th>
               <th scope="col">Sabado</th>
             </tr>
-          
-          <tbody class="table-group-divider">
-            <tr>
-              <th>walter <br/> 11:30 hs</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>walter</th>
-              
-            </tr>
-            <tr>
-              <th>walter</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>walter</th>
-              
-            </tr>
-            <tr>
-              <th>walter</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>fsdfsd</th>
-              <th>walter</th>
-              <th>walter</th>
-              
-            </tr>
-          </tbody>
-        </table>
-        {/* {reservados.length == 0 ? (
-          <h1 className="text-3xl text-center text-green-500 font-bold ">
-            No hay Reservas
-          </h1>
-        ) : (
-          reservados.map(
-            (cliente, index) => (
-              console.log(cliente.nombre),
-              (<CardContactos key={index} cliente={cliente} />)
-            )
-          )
-        )} */}
+
+            <tbody className="table-group-divider">
+              {reservados.length === 0 ? (
+                <tr>
+                  <td
+                    colSpan="8"
+                    className="text-3xl text-center text-green-500 font-bold "
+                  >
+                    No hay Reservas
+                  </td>
+                </tr>
+              ) : (
+                reservados.map((cliente, index) => (
+                  // console.log(cliente),
+                  <tr key={index} className="border bg-green-300">
+                    <th scope="row">{cliente.dia}</th>
+                    <td>{cliente.hora}</td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Lunes"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Martes"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Miércoles"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Jueves"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Viernes"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                    <td>
+                      {diaDeSemana(cliente.dia) === "Sábado"
+                        ? cliente.nombre
+                        : ""}
+                    </td>
+                  </tr>
+                ))
+              )}
+            </tbody>
+          </table>
+        </div>
       </section>
       <Navegador />
     </div>

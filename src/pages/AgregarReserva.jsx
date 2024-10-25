@@ -1,4 +1,4 @@
-import React from "react";
+import {useState, useEffect} from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -7,6 +7,16 @@ import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const AgregarReserva = () => {
   const navegate = useNavigate();
+const [fechaMinima , setFechaMinima] = useState();
+
+
+
+useEffect(()=>{
+  
+  setFechaMinima(new Date().toISOString().split("T")[0]); // Obtiene la fecha de hoy en formato YYYY-MM-DD
+
+},[])
+
   return (
     <>
       <div className="h-[calc(100vh-76px)] bg-slate-700 flex items-center justify-center">
@@ -99,7 +109,7 @@ const AgregarReserva = () => {
               <option value="Cancelada">Depilación</option>
             </select>
 
-            <Field name="fecha" type="date" className="p-1 ps-3 w-60 rounded-full border-2" />
+            <Field name="fecha" type="date" min={fechaMinima} className="p-1 ps-3 w-60 rounded-full border-2" />
 
             <Field
               name="hora"

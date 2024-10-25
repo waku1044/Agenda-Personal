@@ -59,7 +59,7 @@ const Login = () => {
             return error;
           }}
         >
-          <Form className=" bg-cyan-500 flex flex-col justify-center items-center py-10 gap-4 w-80 rounded mx-auto px-10 ">
+          <Form className=" bg-cyan-500 flex flex-col justify-center items-center py-10 gap-2 w-80 rounded mx-auto px-10 ">
             <div className=" input-group">
               <Field
                 type="text"
@@ -68,17 +68,17 @@ const Login = () => {
                 placeholder="Usuario"
                 autoComplete="off"
               />
+            </div>
               <p className="text-red-600">
                 <ErrorMessage name="username" />
               </p>
-            </div>
 
-            <div className="input-group relative">
+            <div className="input-group relative pb-0">
               <Field
                 type={type ? "text" : "password"}
                 name="password"
                 placeholder="Password"
-                className="form-control p-1 ps-3 rounded-full "
+                className="form-control p-1 ps-3 w-60 rounded-full "
                 autoComplete="off"
               />
               <img
@@ -91,10 +91,10 @@ const Login = () => {
                 className="absolute top-2 right-2  cursor-pointer"
               />
 
+            </div>
               <p className="text-red-600">
                 <ErrorMessage name="password" />
               </p>
-            </div>
 
             <button
               type="submit"

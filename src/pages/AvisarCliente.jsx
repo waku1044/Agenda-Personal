@@ -5,21 +5,53 @@ import axios from "axios";
 
 const AvisarCliente = () => {
   const [clientes, setClientes] = useState([]);
+  const [avisar, setAvisar] = useState("");
 
-  const handleClick = (tel) => {
+  function fechaInicioMas14Dias(inicio) {
+    let diasASumar = 14;
+    let fechaAviso = new Date(inicio);
+    fechaAviso.setDate(fechaAviso.getDate() + diasASumar);
+    // Formatear la fecha para mostrarla
+    let opciones = { year: "numeric", month: "long", day: "numeric" };
+    let fechaFormateada = fechaAviso.toJSON("es-ES", opciones).split("T")[0];
+    return fechaFormateada;
+  }
+  // resultado  2024/10/05
+
+  function avisarCliente(inicio) {
+    let hoy = new Date().toISOString().split("T")[0];
+console.log(fechaInicioMas14Dias(inicio))
+    return  hoy >=  fechaInicioMas14Dias(inicio);
+  }
+  // Prueba a ver si anda
+  // avisarCliente('2024/10/10') // retorna un booleano
+
+  const handleClick = (tel, nombre) => {
     const phoneNumber = tel;
-    const message =
-      "Hola, Como estas? Pasaba para avisarte que ya es tiempo de hacer el retoque a tus pestañas! Avisame si es que vienes asi te reservo un lugar. Espero que estes muy bien, Saludos.";
-    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    const message = `Hola, Como estas ${nombre} ? Pasaba para avisarte que ya es tiempo de hacer el retoque a tus pestañas! Avisame si es que vienes asi te reservo un lugar. Espero que estes muy bien, Saludos.`;
+    const url = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+      message
+    )}`;
     window.open(url, "_blank");
   };
+
+  function fechaInicialAlReves (inicial){
+      
+          let fechaInicio = inicial.split("/");
+          let diaInicio = fechaInicio[0];
+          let mesInicio = fechaInicio[1];
+          let añoInicio = fechaInicio[2];
+          let fechaAlReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
+          return fechaAlReves;
+
+  }
 
   useEffect(() => {
     const data = JSON.parse(localStorage.getItem("data"));
     axios
       .get("http://localhost:3000/clientes")
       .then((res) => {
-        setClientes(res.data);
+        setClientes(res.data)
       })
       .catch((err) => {
         console.log(err);
@@ -39,29 +71,46 @@ const AvisarCliente = () => {
           Avisar Cliente
         </h1>
         <table className="table table-success table-bordered border-primary text-center table-striped">
-          <thead>
-            <tr className="border bg-green-300 ">
+          
+            <tr className="border bg-green-300">
               <th scope="col">Cliente</th>
               <th scope="col">Avisar</th>
               <th scope="col">Acción</th>
             </tr>
-          </thead>
-          <tbody className="table-group-divider">
-            {clientes.map((cliente) => (
-              <tr className="bg-lime-400" key={cliente.id}>
-                <th>{cliente.nombre}</th>
-                <th>{cliente.reserva ? "Si" : "No"}</th>
-                <td>
-                  <button
-                    className={cliente.reserva ? 'btn btn-success' : 'btn btn-disable'}
-                    to="#"
-                    onClick={cliente.reserva ? () => handleClick(cliente.telefono) : null}  
-                  >
-                    {cliente.reserva ? 'Avisar' : 'No Avisar'}
-                  </button>
+          
+          <tbody className="">
+            {clientes.length === 0 ? (
+              <tr>
+                <td
+                  colSpan="8"
+                  className="text-3xl text-center text-green-500 font-bold "
+                >
+                  No hay Reservas
                 </td>
               </tr>
-            ))}
+            ) : (
+              clientes.map((cliente, index) => {
+                return (
+                  <tr className="bg-lime-400 ">
+                    <th key={index}>{cliente.nombre}</th>
+                    <th className={avisarCliente(fechaInicialAlReves(cliente.dia)) ? 'bg-green-400':''}>{avisarCliente(fechaInicialAlReves(cliente.dia)) ? "Si" : "No"}</th>
+                    <td>
+                      <button
+                        className={avisarCliente(fechaInicialAlReves(cliente.dia)) ? "btn btn-success" : "btn btn-disable"}
+                        to="#"
+                        onClick={
+                          avisarCliente(fechaInicialAlReves(cliente.dia))
+                            ? () => handleClick(cliente.telefono, cliente.nombre)
+                            : null
+                        }
+                      >
+                        {avisarCliente(fechaInicialAlReves(cliente.dia)) ? "Avisar" : "No Avisar"}
+                      </button>
+                    </td>
+                  </tr>)}))}
+                   
+            
+            
           </tbody>
         </table>
       </section>

@@ -10,7 +10,7 @@ const Navegador = () => {
   const navigate = useNavigate();
   let user = JSON.parse(localStorage.getItem("data"));
   const location = useLocation();
-  console.log(location.pathname);
+  // console.log(location.pathname);
 
   useEffect(() => {
     switch (location.pathname) {
