@@ -7,10 +7,10 @@ const AvisarCliente = () => {
   const [clientes, setClientes] = useState([]);
   const [avisar, setAvisar] = useState("");
 
-  function fechaInicioMas14Dias(inicio) {
-    let diasASumar = 14;
+  function fechaInicioMas14fechas(inicio) {
+    let fechasASumar = 14;
     let fechaAviso = new Date(inicio);
-    fechaAviso.setDate(fechaAviso.getDate() + diasASumar);
+    fechaAviso.setDate(fechaAviso.getDate() + fechasASumar);
     // Formatear la fecha para mostrarla
     let opciones = { year: "numeric", month: "long", day: "numeric" };
     let fechaFormateada = fechaAviso.toJSON("es-ES", opciones).split("T")[0];
@@ -20,8 +20,8 @@ const AvisarCliente = () => {
 
   function avisarCliente(inicio) {
     let hoy = new Date().toISOString().split("T")[0];
-console.log(fechaInicioMas14Dias(inicio))
-    return  hoy >=  fechaInicioMas14Dias(inicio);
+console.log(fechaInicioMas14fechas(inicio))
+    return  hoy >=  fechaInicioMas14fechas(inicio);
   }
   // Prueba a ver si anda
   // avisarCliente('2024/10/10') // retorna un booleano
@@ -93,18 +93,18 @@ console.log(fechaInicioMas14Dias(inicio))
                 return (
                   <tr className="bg-lime-400 ">
                     <th key={index}>{cliente.nombre}</th>
-                    <th className={avisarCliente(fechaInicialAlReves(cliente.dia)) ? 'bg-green-400':''}>{avisarCliente(fechaInicialAlReves(cliente.dia)) ? "Si" : "No"}</th>
+                    <th className={avisarCliente(fechaInicialAlReves(cliente.fecha)) ? 'bg-green-400':''}>{avisarCliente(fechaInicialAlReves(cliente.fecha)) ? "Si" : "No"}</th>
                     <td>
                       <button
-                        className={avisarCliente(fechaInicialAlReves(cliente.dia)) ? "btn btn-success" : "btn btn-disable"}
+                        className={avisarCliente(fechaInicialAlReves(cliente.fecha)) ? "btn btn-success" : "btn btn-disable"}
                         to="#"
                         onClick={
-                          avisarCliente(fechaInicialAlReves(cliente.dia))
+                          avisarCliente(fechaInicialAlReves(cliente.fecha))
                             ? () => handleClick(cliente.telefono, cliente.nombre)
                             : null
                         }
                       >
-                        {avisarCliente(fechaInicialAlReves(cliente.dia)) ? "Avisar" : "No Avisar"}
+                        {avisarCliente(fechaInicialAlReves(cliente.fecha)) ? "Avisar" : "No Avisar"}
                       </button>
                     </td>
                   </tr>)}))}

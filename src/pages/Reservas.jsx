@@ -13,37 +13,45 @@ const Reservas = () => {
 
   const [search, setSearch] = useState("");
 
+  
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("data"));
+    let hoy = new Date();
+    let actual = hoy.getDay();
+    
+    
+    // Ajustar para que el lunes sea el primer día de la semana
+    let lunes = new Date(hoy);
+    lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
+    
+    let sabado = new Date(lunes);
+    sabado.setDate(lunes.getDate() + 5); // Calcula el domingo de la misma semana
+    
+    setInicioSemana(lunes.toLocaleDateString());
+    setFinSemana(sabado.toLocaleDateString());
+  },[]);
+  
+  useEffect(() => {
+    // const data = JSON.parse(localStorage.getItem("data"));
     axios
       .get("http://localhost:3000/clientes")
       .then((res) => {
         setReservados(res.data);
-        // console.log(res.data)
-      })
+        
+        })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  useEffect(() => {
-    let hoy = new Date();
-    let actual = hoy.getDay();
-    let empiezaSemana;
 
-    // Ajustar para que el lunes sea el primer día de la semana
-    let lunes = new Date(hoy);
-    lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
-
-    let domingo = new Date(lunes);
-    domingo.setDate(lunes.getDate() + 6); // Calcula el domingo de la misma semana
-
-    setInicioSemana(lunes.toLocaleDateString());
-    setFinSemana(domingo.toLocaleDateString());
-  }, []);
-
-  function diaDeSemana(fechaNumero) {
-    let diasDeSemana = [
+  function entraEnLaSemana(fechainicio){
+    // console.log(inicioSemana, finSemana)
+    return (fechainicio >= fechaInicialAlReves(inicioSemana) && fechainicio <= fechaInicialAlReves(finSemana))
+  }
+  
+  
+  function fechaDeSemana(fechaNumero) {
+    let fechasDeSemana = [
       "Domingo",
       "Lunes",
       "Martes",
@@ -52,13 +60,24 @@ const Reservas = () => {
       "Viernes",
       "Sábado",
     ];
-    let dia = fechaNumero.split("/")[0];
+    let fecha = fechaNumero.split("/")[0];
     let mes = fechaNumero.split("/")[1];
     let año = fechaNumero.split("/")[2];
-    let fechaAlReves = `${año}/${mes}/${dia}`;
+    let fechaAlReves = `${año}/${mes}/${fecha}`;
     let actual = new Date(fechaAlReves);
-    return diasDeSemana[actual.getDay()];
+    return fechasDeSemana[actual.getDay()];
   }
+
+  function fechaInicialAlReves (inicial){
+      
+    let fechaInicio = inicial.split("/");
+    let diaInicio = fechaInicio[0];
+    let mesInicio = fechaInicio[1];
+    let añoInicio = fechaInicio[2];
+    let fechaAlReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
+    return fechaAlReves;
+
+}
 
   return (
     <div>
@@ -104,40 +123,41 @@ const Reservas = () => {
               ) : (
                 reservados.map((cliente, index) => (
                   // console.log(cliente),
+                  (entraEnLaSemana(fechaInicialAlReves(cliente.fecha))) ?
                   <tr key={index} className="border bg-green-300">
-                    <th scope="row">{cliente.dia}</th>
+                    <th scope="row">{cliente.fecha}</th>
                     <td>{cliente.hora}</td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Lunes"
+                      {fechaDeSemana(cliente.fecha) === "Lunes"
                         ? cliente.nombre
                         : ""}
                     </td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Martes"
+                      {fechaDeSemana(cliente.fecha) === "Martes"
                         ? cliente.nombre
                         : ""}
                     </td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Miércoles"
+                      {fechaDeSemana(cliente.fecha) === "Miércoles"
                         ? cliente.nombre
                         : ""}
                     </td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Jueves"
+                      {fechaDeSemana(cliente.fecha) === "Jueves"
                         ? cliente.nombre
                         : ""}
                     </td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Viernes"
+                      {fechaDeSemana(cliente.fecha) === "Viernes"
                         ? cliente.nombre
                         : ""}
                     </td>
                     <td>
-                      {diaDeSemana(cliente.dia) === "Sábado"
+                      {fechaDeSemana(cliente.fecha) === "Sábado"
                         ? cliente.nombre
                         : ""}
                     </td>
-                  </tr>
+                  </tr> : ''
                 ))
               )}
             </tbody>
