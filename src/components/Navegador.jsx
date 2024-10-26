@@ -34,22 +34,22 @@ const Navegador = () => {
   return (
     <div className="flex justify-between items-center p-4 bg-slate-600">
       <Link to="/reservas" className={classreservas}>
-        <h1 className="text-xs  md:text-xl font-bold text-green-500 hover:text-purple-400 ">
+        <h1 className="text-xl font-bold text-green-500 hover:text-purple-400 ">
           Reservas
         </h1>
       </Link>
       <Link to="/agregarreserva" className={classagregarreserva}>
-        <h1 className="text-xs  md:text-xl font-bold text-green-500 hover:text-purple-400   ">
+        <h1 className="text-xl font-bold text-green-500 hover:text-purple-400   ">
           Agregar Reserva
         </h1>
       </Link>
       <Link to="/avisarcliente" className={classavisarcliente}>
-        <h1 className="text-xs  md:text-xl font-bold text-green-500 hover:text-purple-400   ">
+        <h1 className="text-xl font-bold text-green-500 hover:text-purple-400   ">
           Avisar
         </h1>
       </Link>
       <Link to="/clientes" className={classclientes}>
-        <h1 className="text-xs  md:text-xl font-bold text-green-500 hover:text-purple-400   ">
+        <h1 className="text-xl font-bold text-green-500 hover:text-purple-400   ">
           Clientes
         </h1>
       </Link>

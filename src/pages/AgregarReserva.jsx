@@ -1,4 +1,4 @@
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
@@ -7,15 +7,11 @@ import { Notify } from "notiflix/build/notiflix-notify-aio";
 
 const AgregarReserva = () => {
   const navegate = useNavigate();
-const [fechaMinima , setFechaMinima] = useState();
+  const [fechaMinima, setFechaMinima] = useState();
 
-
-
-useEffect(()=>{
-  
-  setFechaMinima(new Date().toISOString().split("T")[0]); // Obtiene la fecha de hoy en formato YYYY-MM-DD
-
-},[])
+  useEffect(() => {
+    setFechaMinima(new Date().toISOString().split("T")[0]); // Obtiene la fecha de hoy en formato YYYY-MM-DD
+  }, []);
 
   return (
     <>
@@ -25,21 +21,23 @@ useEffect(()=>{
             nombre: "",
             telefono: "",
             servicio: "",
-            dia: "",
+            fecha: "",
             hora: "",
+            seña: "",
           }}
-          onSubmit={async (values) => {
+          onSubmit={(values) => {
             console.log(
               values.nombre,
               values.telefono,
-              values.dia,
+              values.fecha,
               values.hora,
-              values.servicio
+              values.servicio,
+              values.seña
             );
-            const { nombre, telefono, dia, hora, servicio } = values;
-            const data = JSON.parse(localStorage.getItem("data"));
-            console.log(data.username);
-            
+            const { nombre, telefono, fecha, hora, servicio, seña } = values;
+
+            console.log(nombre, telefono, fecha, hora, servicio, seña);
+            console.log("este es el servicio " + servicio.value);
           }}
           validate={(values) => {
             const error = {};
@@ -53,16 +51,6 @@ useEffect(()=>{
             if (!/^\d+$/.test(values.telefono)) {
               error.telefono = "El telefono debe ser numerico";
             }
-            if (!values.correo) {
-              error.correo = "El correo es requerido";
-            }
-            if (
-              !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                values.correo
-              )
-            ) {
-              error.correo = "El correo no es valido";
-            }
 
             return error;
           }}
@@ -75,7 +63,6 @@ useEffect(()=>{
               name="nombre"
               placeholder="Nombre"
               className="p-1 ps-3 w-60 rounded-full border-2"
-              requered
             />
             <ErrorMessage name="nombre" className="text-danger" />
 
@@ -86,30 +73,38 @@ useEffect(()=>{
             />
             <ErrorMessage name="telefono" className="text-danger" />
 
-            <select
-              name="estado"
+            <Field
+              as="select"
+              name="servicio"
               className="p-1 ps-3 w-60 rounded-full border-2"
             >
-              <option value="" disabled selected>
+              <option disabled value="">
                 Servicio
               </option>
-              <option value="Pendiente">Clasicas</option>
-              <option value="Confirmada">Hawaianas</option>
-              <option value="Cancelada">Rimel</option>
-              <option value="Cancelada">Volumen</option>
-              <option value="Cancelada">Wispy</option>
-              <option value="Cancelada">MegaVolumen</option>
-              <option value="Cancelada">Liffting</option>
-              <option value="Cancelada">Diseño / Perfilado de cejas</option>
-              <option value="Cancelada">
+              <option value="Clasicas">Clasicas</option>
+              <option value="Hawaianas">Hawaianas</option>
+              <option value="Rimel">Rimel</option>
+              <option value="Volumen">Volumen</option>
+              <option value="Wispy">Wispy</option>
+              <option value="MegaVolumen">MegaVolumen</option>
+              <option value="Liffting">Liffting</option>
+              <option value="Diseño / Perfilado de cejas">
+                Diseño / Perfilado de cejas
+              </option>
+              <option value="Diseño / Perfilado / Laminado de cejas">
                 Diseño / Perfilado / Laminado de cejas
               </option>
-              <option value="Cancelada">Masajes Sedativos</option>
-              <option value="Cancelada">Masajes Reductores</option>
-              <option value="Cancelada">Depilación</option>
-            </select>
+              <option value="Masajes Sedativos">Masajes Sedativos</option>
+              <option value="Masajes Reductores">Masajes Reductores</option>
+              <option value="Depilación">Depilación</option>
+            </Field>
 
-            <Field name="fecha" type="date" min={fechaMinima} className="p-1 ps-3 w-60 rounded-full border-2" />
+            <Field
+              name="fecha"
+              type="date"
+              min={fechaMinima}
+              className="p-1 ps-3 w-60 rounded-full border-2"
+            />
 
             <Field
               name="hora"
@@ -117,13 +112,18 @@ useEffect(()=>{
               className="p-1 ps-3 w-60 rounded-full border-2"
             />
 
-<Field
-            name="seña"
-            type="number"
-            placeholder="Seña"
-            className="p-1 ps-3 w-60 rounded-full border-2"
+            <Field
+              name="seña"
+              type="number"
+              placeholder="Seña"
+              className="p-1 ps-3 w-60 rounded-full border-2"
             />
-            <ErrorMessage name="seña" requered className="text-danger" style={'color:red'} />
+            <ErrorMessage
+              name="seña"
+              requered
+              className="text-danger"
+              style={"color:red"}
+            />
 
             <button
               type="submit"

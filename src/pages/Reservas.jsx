@@ -10,7 +10,7 @@ const Reservas = () => {
   const [reservados, setReservados] = useState([]);
   const [inicioSemana, setInicioSemana] = useState();
   const [finSemana, setFinSemana] = useState();
- 
+
   const [search, setSearch] = useState("");
 
   useEffect(() => {
@@ -26,9 +26,6 @@ const Reservas = () => {
       });
   }, []);
 
-
-  
-
   useEffect(() => {
     let hoy = new Date();
     let actual = hoy.getDay();
@@ -43,7 +40,7 @@ const Reservas = () => {
 
     setInicioSemana(lunes.toLocaleDateString());
     setFinSemana(domingo.toLocaleDateString());
-  },[]);
+  }, []);
 
   function diaDeSemana(fechaNumero) {
     let diasDeSemana = [
@@ -75,20 +72,24 @@ const Reservas = () => {
         <h1 className="text-3xl text-center mt-5 text-green-500 font-bold mx-auto ">
           Reservas de esta Semana
         </h1>
-        <p className="text-center  fs-5 font-bold text-pink-400">{inicioSemana} ___ {finSemana} </p>
+        <p className="text-center  fs-5 font-bold text-pink-400">
+          {inicioSemana} ___ {finSemana}{" "}
+        </p>
         <div className="overflow-auto">
           <table className="table table-success table-bordered border-primary text-center table-striped">
-            <tr className="border bg-green-300 ">
-              {/* <th scope="col">#</th> */}
-              <th scope="col">Fecha</th>
-              <th scope="col">Hora</th>
-              <th scope="col">Lunes</th>
-              <th scope="col">Martes</th>
-              <th scope="col">Miercoles</th>
-              <th scope="col">Jueves</th>
-              <th scope="col">Viernes</th>
-              <th scope="col">Sabado</th>
-            </tr>
+            <thead className="border bg-green-300 ">
+              
+                {/* <th scope="col">#</th> */}
+                <th scope="col">Fecha</th>
+                <th scope="col">Hora</th>
+                <th scope="col">Lunes</th>
+                <th scope="col">Martes</th>
+                <th scope="col">Miercoles</th>
+                <th scope="col">Jueves</th>
+                <th scope="col">Viernes</th>
+                <th scope="col">Sabado</th>
+              
+            </thead>
 
             <tbody className="table-group-divider">
               {reservados.length === 0 ? (
