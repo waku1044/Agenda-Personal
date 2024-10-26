@@ -30,6 +30,7 @@ const Reservas = () => {
     setFinSemana(sabado.toLocaleDateString());
   },[]);
   
+
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("data"));
     axios
@@ -77,7 +78,8 @@ const Reservas = () => {
     let fechaAlReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
     return fechaAlReves;
 
-}
+  }
+
 
   return (
     <div>
@@ -98,7 +100,7 @@ const Reservas = () => {
           <table className="table table-success table-bordered border-primary text-center table-striped">
             <thead className="border bg-green-300 ">
               
-                {/* <th scope="col">#</th> */}
+                
                 <th scope="col">Fecha</th>
                 <th scope="col">Hora</th>
                 <th scope="col">Lunes</th>
@@ -128,14 +130,14 @@ const Reservas = () => {
                     <th scope="row">{cliente.fecha}</th>
                     <td>{cliente.hora}</td>
                     <td>
-                      {fechaDeSemana(cliente.fecha) === "Lunes"
+                      { fechaDeSemana(cliente.fecha) === "Lunes"
                         ? cliente.nombre
-                        : ""}
+                        : "" }
                     </td>
                     <td>
-                      {fechaDeSemana(cliente.fecha) === "Martes"
+                      { fechaDeSemana(cliente.fecha) === "Martes"
                         ? cliente.nombre
-                        : ""}
+                        : "" }
                     </td>
                     <td>
                       {fechaDeSemana(cliente.fecha) === "Miércoles"

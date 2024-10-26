@@ -25,19 +25,30 @@ const AgregarReserva = () => {
             hora: "",
             seña: "",
           }}
-          onSubmit={(values) => {
+          onSubmit={(values, { resetForm }) => {
             console.log(
               values.nombre,
               values.telefono,
+              values.servicio,
               values.fecha,
               values.hora,
-              values.servicio,
               values.seña
             );
-            const { nombre, telefono, fecha, hora, servicio, seña } = values;
+            // const { nombre, telefono, fecha, hora, servicio, seña } = values;
 
-            console.log(nombre, telefono, fecha, hora, servicio, seña);
-            console.log("este es el servicio " + servicio.value);
+            axios
+            .post("http://localhost:3000/clientes", values)
+            .then((response)=>{
+              Notify.success("Reserva agregada con éxito");
+              console.log(response.data)
+              console.log(values)
+              resetForm();
+            })
+            .catch((error) => {
+              console.error("Error al agregar la reserva:", error);
+              Notify.failure("Error al agregar la reserva");
+            });
+            
           }}
           validate={(values) => {
             const error = {};
@@ -63,6 +74,7 @@ const AgregarReserva = () => {
               name="nombre"
               placeholder="Nombre"
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             />
             <ErrorMessage name="nombre" className="text-danger" />
 
@@ -70,6 +82,7 @@ const AgregarReserva = () => {
               name="telefono"
               placeholder="Telefono"
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             />
             <ErrorMessage name="telefono" className="text-danger" />
 
@@ -77,6 +90,7 @@ const AgregarReserva = () => {
               as="select"
               name="servicio"
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             >
               <option disabled value="">
                 Servicio
@@ -104,12 +118,14 @@ const AgregarReserva = () => {
               type="date"
               min={fechaMinima}
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             />
 
             <Field
               name="hora"
               type="time"
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             />
 
             <Field
@@ -117,10 +133,10 @@ const AgregarReserva = () => {
               type="number"
               placeholder="Seña"
               className="p-1 ps-3 w-60 rounded-full border-2"
+              required
             />
             <ErrorMessage
               name="seña"
-              requered
               className="text-danger"
               style={"color:red"}
             />
