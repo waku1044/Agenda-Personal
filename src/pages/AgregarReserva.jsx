@@ -35,7 +35,11 @@ const AgregarReserva = () => {
               values.seña
             );
             // const { nombre, telefono, fecha, hora, servicio, seña } = values;
-
+              values.fecha = values.fecha.split('-');
+              let año = values.fecha[0];
+              let mes = values.fecha[1];
+              let dia = values.fecha[2];
+              values.fecha = `${año}/${mes}/${dia}`;
             axios
             .post("http://localhost:3000/clientes", values)
             .then((response)=>{

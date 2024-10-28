@@ -13,23 +13,25 @@ const Reservas = () => {
 
   const [search, setSearch] = useState("");
 
-  
   useEffect(() => {
     let hoy = new Date();
     let actual = hoy.getDay();
-    
-    
+
+    // console.log(actual); // 0
     // Ajustar para que el lunes sea el primer día de la semana
     let lunes = new Date(hoy);
-    lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
-    
+    if (lunes.getDay() === 0) {
+      lunes.setDate(hoy.getDate() + 1);
+    } else {
+      lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
+      console.log(lunes);
+    }
     let sabado = new Date(lunes);
     sabado.setDate(lunes.getDate() + 5); // Calcula el domingo de la misma semana
-    
+
     setInicioSemana(lunes.toLocaleDateString());
     setFinSemana(sabado.toLocaleDateString());
-  },[]);
-  
+  }, []);
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("data"));
@@ -37,22 +39,23 @@ const Reservas = () => {
       .get("http://localhost:3000/clientes")
       .then((res) => {
         setReservados(res.data);
-        
-        })
+      })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-
-  function entraEnLaSemana(fechainicio){
+  function entraEnLaSemana(fechainicio) {
     // console.log(inicioSemana, finSemana)
-    return (fechainicio >= fechaInicialAlReves(inicioSemana) && fechainicio <= fechaInicialAlReves(finSemana))
+    return (
+      fechainicio >= fechaInicialAlReves(inicioSemana) &&
+      fechainicio <= fechaInicialAlReves(finSemana)
+    );
   }
-  
-  
+
   function fechaDeSemana(fechaNumero) {
-    let fechasDeSemana = [
+    console.log(fechaNumero)
+    let diasDeSemana = [
       "Domingo",
       "Lunes",
       "Martes",
@@ -61,25 +64,22 @@ const Reservas = () => {
       "Viernes",
       "Sábado",
     ];
-    let fecha = fechaNumero.split("/")[0];
-    let mes = fechaNumero.split("/")[1];
-    let año = fechaNumero.split("/")[2];
-    let fechaAlReves = `${año}/${mes}/${fecha}`;
-    let actual = new Date(fechaAlReves);
-    return fechasDeSemana[actual.getDay()];
+    // let fecha = fechaNumero.split("/")[0];
+    // let mes = fechaNumero.split("/")[1];
+    // let año = fechaNumero.split("/")[2];
+    // let fechaAlReves = `${año}/${mes}/${fecha}`;
+    let actual = new Date(fechaNumero);
+    return diasDeSemana[actual.getDay()];
   }
 
-  function fechaInicialAlReves (inicial){
-      
+  function fechaAlReves(inicial) {
     let fechaInicio = inicial.split("/");
     let diaInicio = fechaInicio[0];
     let mesInicio = fechaInicio[1];
     let añoInicio = fechaInicio[2];
-    let fechaAlReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
-    return fechaAlReves;
-
+    let fechaReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
+    return fechaReves;
   }
-
 
   return (
     <div>
@@ -99,69 +99,62 @@ const Reservas = () => {
         <div className="overflow-auto">
           <table className="table table-success table-bordered border-primary text-center table-striped">
             <thead className="border bg-green-300 ">
-              
-                
-                <th scope="col">Fecha</th>
-                <th scope="col">Hora</th>
-                <th scope="col">Lunes</th>
-                <th scope="col">Martes</th>
-                <th scope="col">Miercoles</th>
-                <th scope="col">Jueves</th>
-                <th scope="col">Viernes</th>
-                <th scope="col">Sabado</th>
-              
+              <th scope="col">Fecha</th>
+              <th scope="col">Hora</th>
+              <th scope="col">Lunes</th>
+              <th scope="col">Martes</th>
+              <th scope="col">Miercoles</th>
+              <th scope="col">Jueves</th>
+              <th scope="col">Viernes</th>
+              <th scope="col">Sabado</th>
             </thead>
 
             <tbody className="table-group-divider">
-              {reservados.length === 0 ? (
-                <tr>
-                  <td
-                    colSpan="8"
-                    className="text-3xl text-center text-green-500 font-bold "
-                  >
-                    No hay Reservas
-                  </td>
-                </tr>
-              ) : (
-                reservados.map((cliente, index) => (
-                  // console.log(cliente),
-                  (entraEnLaSemana(fechaInicialAlReves(cliente.fecha))) ?
-                  <tr key={index} className="border bg-green-300">
-                    <th scope="row">{cliente.fecha}</th>
-                    <td>{cliente.hora}</td>
-                    <td>
-                      { fechaDeSemana(cliente.fecha) === "Lunes"
-                        ? cliente.nombre
-                        : "" }
-                    </td>
-                    <td>
-                      { fechaDeSemana(cliente.fecha) === "Martes"
-                        ? cliente.nombre
-                        : "" }
-                    </td>
-                    <td>
-                      {fechaDeSemana(cliente.fecha) === "Miércoles"
-                        ? cliente.nombre
-                        : ""}
-                    </td>
-                    <td>
-                      {fechaDeSemana(cliente.fecha) === "Jueves"
-                        ? cliente.nombre
-                        : ""}
-                    </td>
-                    <td>
-                      {fechaDeSemana(cliente.fecha) === "Viernes"
-                        ? cliente.nombre
-                        : ""}
-                    </td>
-                    <td>
-                      {fechaDeSemana(cliente.fecha) === "Sábado"
-                        ? cliente.nombre
-                        : ""}
-                    </td>
-                  </tr> : ''
-                ))
-              )}
+              {reservados.map((cliente, index) => {
+                console.log(cliente.fecha)
+                if (
+                  cliente.fecha >= fechaAlReves(inicioSemana) &&
+                  cliente.fecha <= fechaAlReves(finSemana)
+                ) {
+                  console.log(cliente.nombre)
+                  return (
+                    <tr className="border bg-green-300" key={index}>
+                      <th scope="row">{cliente.fecha}</th>
+                      <td>{cliente.hora}</td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Lunes"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Martes"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Miércoles"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Jueves"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Viernes"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                      <td>
+                        {fechaDeSemana(cliente.fecha) === "Sábado"
+                          ? cliente.nombre
+                          : ""}
+                      </td>
+                    </tr>
+                  );
+                }
+              })}
             </tbody>
           </table>
         </div>
