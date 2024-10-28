@@ -39,9 +39,9 @@ const Clientes = () => {
             Lista de Clientes
           </h1>
 
-          <div className="flex flex-column flex-wrap gap-2 w-75 h-75">
+          <div className="flex flex-column flex-wrap gap-2 ">
             {reservados.length == 0 ? (
-              <h1 className="text-3xl text-green-500 font-bold mx-auto mt-[40vh]">
+              <h1 className="text-3xl text-slate-950 text-center font-bold mx-auto ">
                 No hay Clientes
               </h1>
             ) : (
