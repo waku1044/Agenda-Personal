@@ -111,42 +111,41 @@ const Reservas = () => {
 
             <tbody className="table-group-divider">
               {reservados.map((cliente, index) => {
-                console.log(cliente.fecha)
                 if (
-                  cliente.fecha >= fechaAlReves(inicioSemana) &&
-                  cliente.fecha <= fechaAlReves(finSemana)
-                ) {
-                  console.log(cliente.nombre)
+                  new Date(cliente.fecha) >= new Date(fechaAlReves(inicioSemana)) &&
+                  new Date(cliente.fecha) <= new Date(fechaAlReves(finSemana)
+                )) {
+                 
                   return (
                     <tr className="border bg-green-300" key={index}>
                       <th scope="row">{cliente.fecha}</th>
                       <td>{cliente.hora}</td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Lunes"
                           ? cliente.nombre
                           : ""}
                       </td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Martes"
                           ? cliente.nombre
                           : ""}
                       </td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Miércoles"
                           ? cliente.nombre
                           : ""}
                       </td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Jueves"
                           ? cliente.nombre
                           : ""}
                       </td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Viernes"
                           ? cliente.nombre
                           : ""}
                       </td>
-                      <td>
+                      <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Sábado"
                           ? cliente.nombre
                           : ""}

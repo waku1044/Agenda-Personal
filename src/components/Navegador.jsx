@@ -41,7 +41,7 @@ const Navegador = () => {
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="#000"
+          fill="#fff"
           class="bi bi-journal-check"
           viewBox="0 0 16 16"
         >
@@ -61,7 +61,7 @@ const Navegador = () => {
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="#000"
+          fill="#fff"
           class="bi bi-person-plus"
           viewBox="0 0 16 16"
         >
@@ -80,7 +80,7 @@ const Navegador = () => {
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="#000"
+          fill="#fff"
           class="bi bi-envelope-arrow-up"
           viewBox="0 0 16 16"
         >
@@ -96,7 +96,7 @@ const Navegador = () => {
           xmlns="http://www.w3.org/2000/svg"
           width="30"
           height="30"
-          fill="#000"
+          fill="#fff"
           class="bi bi-person-rolodex"
           viewBox="0 0 16 16"
         >
