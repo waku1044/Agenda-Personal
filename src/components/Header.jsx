@@ -1,6 +1,10 @@
 import Logo from "../assets/img/logo.png";
+import { useState, useEffect } from 'react';
+
 
 const Header = () => {
+
+    const [busqueda, setBusqueda ] = useState(null);
 
     return (
         <header className="flex justify-center sm:justify-around gap-14 items-center p-4 bg-slate-600">

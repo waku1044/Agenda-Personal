@@ -12,7 +12,7 @@ const AvisarCliente = () => {
   }
 
   function avisarCliente(fecha, nombre) {
-    const fechaAviso = fechaInicioMas14dias(fecha);
+    const fechaAviso = new Date(fechaInicioMas14dias(fecha));
     const hoy = new Date();
     
     return hoy >= fechaAviso; // Retorna true si hoy es mayor o igual a la fecha de aviso
@@ -62,7 +62,7 @@ const AvisarCliente = () => {
             ) : (
               clientes.map((cliente, index) => (
                 <tr className="bg-lime-400" key={index}>
-                  <td>{cliente.nombre}</td>
+                  <td className="capitalize">{cliente.nombre}</td>
                   <td className={avisarCliente(cliente.fecha, cliente.nombre) ? 'bg-green-400' : ''}>
                     {avisarCliente(cliente.fecha, cliente.nombre) ? "Si" : "No"}
                   </td>

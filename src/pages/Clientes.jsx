@@ -5,7 +5,7 @@ import avatar from "../assets/img/avatarContact.png";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Navegador from "../components/Navegador";
 import Header from "../components/Header";
-import CardContactos from "../components/CardContactos";
+import ItemContacto from "../components/ItemContacto";
 
 const Clientes = () => {
   const navegate = useNavigate();
@@ -27,9 +27,10 @@ const Clientes = () => {
 
   return (
     <>
+    <Header />  
       <div>
         <section
-          className=" flex-column gap-1 h-[calc(100vh-76px)] flex-wrap  justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
+          className=" flex-column  h-[calc(100vh-76px)] flex-wrap  justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
           style={{
             background:
               "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
@@ -39,14 +40,14 @@ const Clientes = () => {
             Lista de Clientes
           </h1>
 
-          <div className="flex flex-column flex-wrap gap-2 ">
+          <div className="flex flex-column flex-wrap gap-2 h-[100%]  ">
             {reservados.length == 0 ? (
-              <h1 className="text-3xl text-slate-950 text-center font-bold mx-auto ">
+              <h1 className="text-3xl text-slate-200 text-center font-bold mx-auto ">
                 No hay Clientes
               </h1>
             ) : (
               reservados.map((cliente, index) => (
-                <CardContactos key={index} cliente={cliente} />
+                <ItemContacto key={index} cliente={cliente} />
               ))
             )}
           </div>

@@ -8,6 +8,7 @@ import Agregar from './pages/AgregarReserva';
 import  Clientes from './pages/Clientes';
 import Editar from './pages/EditContacto';
 import Avisar from './pages/AvisarCliente';
+import Contacto from './pages/Cliente';
 
 function App() {
   
@@ -25,8 +26,9 @@ function App() {
 
           
           <Route path='/reservas' element={<Reservas/>}/>
-          <Route path='/editarcliente/:id' element={<Editar/>}/>
+          <Route path='/editarcontacto/:id' element={<Editar/>}/>
           <Route path='/clientes' element={<Clientes/>}/>
+          <Route path='/cliente/:id' element={<Contacto/>}/>
           <Route path='/avisarcliente' element={<Avisar/>}/>
           {/* <Route path='/cliente/:id' element={<Cliente/>}/> */}
 

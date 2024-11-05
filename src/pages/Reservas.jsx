@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import CardContactos from "../components/CardContactos";
+import CardContactos from "../components/ItemContacto";
 import axios from "axios";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Header from "../components/Header";

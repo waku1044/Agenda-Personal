@@ -8,18 +8,14 @@ import { Formik, Form, Field, ErrorMessage } from 'formik';
 
 
 
-const Contacto  = () => {
+const EditarContacto  = () => {
   const [contacto, setContacto] = useState({});
   const navegate = useNavigate();
     const id = useParams().id;
+    console.log(id)
     useEffect( () => {
-        // console.log(id)
-        const data = JSON.parse(localStorage.getItem("data"));
-        axios.get("http://localhost:3900/api/contacto/" + id,{
-            headers:{
-                Authorization: "Bearer " + data.token,
-            }
-        })
+       
+        axios.get("http://localhost:3000/clientes/")
         .then(async (res)=>{
           let data = await res.data.data;
             setContacto(data)
@@ -44,9 +40,9 @@ const Contacto  = () => {
 
             onSubmit = { async (values)=>{
               
-                const {nombre, telefono, correo, descripcion} = contacto;
-                const data = JSON.parse(localStorage.getItem('data'));
-                const res = await axios.put(`http://localhost:3900/api/contactEdit/${id}`, {  
+                const {nombre, telefono } = contacto;
+                
+                const res = await axios.put(`http://localhost:3000/clientes/${id}`, {  
                   nombre,
                   telefono,
                   correo,
@@ -143,4 +139,4 @@ const Contacto  = () => {
 }
 
 
-export default Contacto;
+export default EditarContacto;
