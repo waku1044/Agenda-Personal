@@ -30,7 +30,7 @@ const Clientes = () => {
     <Header />  
       <div>
         <section
-          className=" flex-column  h-[calc(100vh-76px)] flex-wrap  justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
+          className=" flex-column  h-[calc(80vh-53px)] flex-wrap  justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
           style={{
             background:
               "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
@@ -40,7 +40,7 @@ const Clientes = () => {
             Lista de Clientes
           </h1>
 
-          <div className="flex flex-column flex-wrap gap-2 h-[100%]  ">
+          <div className="flex flex-col items-center justify-center gap-2 md:flex-wrap md:flex-row  w-75 mx-auto md:gap-4">
             {reservados.length == 0 ? (
               <h1 className="text-3xl text-slate-200 text-center font-bold mx-auto ">
                 No hay Clientes

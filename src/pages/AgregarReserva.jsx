@@ -4,6 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navegador from "../components/Navegador";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
+import Header from '../components/Header';
 
 const AgregarReserva = () => {
   const navegate = useNavigate();
@@ -15,7 +16,8 @@ const AgregarReserva = () => {
 
   return (
     <>
-      <div className="h-[calc(100vh-76px)] bg-slate-700 flex items-center justify-center">
+    <Header />
+      <div className="h-[calc(80vh-53px)] bg-slate-700 flex items-center justify-center">
         <Formik
           initialValues={{
             nombre: "",
@@ -70,7 +72,7 @@ const AgregarReserva = () => {
             return error;
           }}
         >
-          <Form className="flex flex-col gap-3 items-center justify-center p-10 ">
+          <Form className="flex flex-col gap-3 items-center justify-center p-10 mt-0 ">
             <h2 className="text-xl font-bold text-green-500">
               Agregar Reserva
             </h2>

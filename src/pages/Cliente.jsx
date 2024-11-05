@@ -59,7 +59,7 @@ const Cliente = () => {
             <div className="col-md-4 flex mx-5 ">
               <img
                 src={avatar}
-                className="img-fluid rounded-start"
+                className="img-fluid rounded-start min-w-5"
                 alt="avatar"
               />
             </div>
