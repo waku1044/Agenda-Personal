@@ -123,32 +123,56 @@ const Reservas = () => {
                       <td>{cliente.hora}</td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Lunes"
-                          ? cliente.nombre
+                          ? <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Martes"
-                          ? cliente.nombre
+                          ?   <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Miércoles"
-                          ? cliente.nombre
+                          ? <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Jueves"
-                          ? cliente.nombre
+                          ? <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Viernes"
-                          ? cliente.nombre
+                          ? <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                       <td className="capitalize">
                         {fechaDeSemana(cliente.fecha) === "Sábado"
-                          ? cliente.nombre
+                          ? <><span>{cliente.nombre}</span>
+                          <br />  
+                          <span>{cliente.servicio}</span>
+                          <br />  
+                          <span>{cliente.seña}</span></>
                           : ""}
                       </td>
                     </tr>

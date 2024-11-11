@@ -30,66 +30,80 @@ const Cliente = () => {
   }, []);
 
   const eliminarContacto = (id) => {
+    console.log(id);
     axios
-      .delete("http://localhost:3900/api/delete/" + id, {
-        headers: {
-          Authorization: "Bearer " + data.token,
-        },
-      })
-      .then((res) => {
+      .delete(`http://localhost:3000/clientes/${id}`)
+      .then(async (res) => {
         Notify.success("Contacto Eliminado Correctamente");
-        setTimeout(() => {
-          navegate("/contactos");
-        }, 2000);
+        navegate("/clientes");
       })
       .catch((err) => {
-        Notify.failure(err);
+        Notify.danger("Contacto No fue eliminado");
+        console.log("Error , " + err);
       });
   };
 
   return (
     <>
       <Header />
-      <div className="flex justify-center items-center">
-        <div
-          className=" row card my-3 p-3 mx-auto bg-orange-200 flex justify-center items-center "
-          style={{ maxWidth: "540px", height: "calc(100vh - 200px)" }}
-        >
-          <div className="flex flex-column flex-md-row items-center justify-center">
-            <div className="col-md-4 flex mx-5 ">
-              <img
-                src={avatar}
-                className="img-fluid rounded-start min-w-5"
-                alt="avatar"
-              />
-            </div>
-            <div className="">
-              <div className="card-body text-center">
-                <h1 className="card-title text-5xl capitalize">{contacto.nombre}</h1>
-                <h3 className="text-3xl font-normal">{contacto.correo}</h3>
-                <h4 className="text-3xl font-normal">{contacto.telefono}</h4>
-                <h5 className="text-3xl font-normal">{contacto.descripcion}</h5>
-                <div className="flex gap-3 my-3">
-                  <Link
-                    to={`/editarcontacto/${contacto.id}`}
-                    className="bg-green-500 text-white p-2 rounded-md hover:scale-110"
-                  >
-                    Editar
-                  </Link>
-                  <button className="bg-red-500 text-white p-2 rounded-md hover:scale-110">
-                    Eliminar
-                  </button>
-                </div>
-                <Link
-                  to={`https://wa.me/+599${contacto.telefono}?text=Hola,%20${contacto.nombre}%20como%20estás`}
-                  target="_blank"
-                  className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md mt-3 hover:scale-110 mx-auto"
+
+      <div
+        className=" row my-3 p-4 gap-3 flex justify-center overflow-auto"
+        style={{ maxWidth: "100%" }}
+      >
+        <div className="flex flex-column col-10 col-md-5 items-center justify-center  bg-orange-200 border-5  border-green-500">
+          <div className=" flex justify-center py-3 ">
+            <img
+              src={avatar}
+              className="img-fluid rounded-start w-1/2 "
+              alt="avatar"
+            />
+          </div>
+          <div className="">
+            <div className="card-body text-center">
+              <h1 className="card-title text-3xl font-bold capitalize">
+                {contacto.nombre}
+              </h1>
+              <h3 className="text-3xl font-normal">{contacto.correo}</h3>
+              <h4 className="text-3xl font-normal">{contacto.telefono}</h4>
+
+              <div className="flex gap-3 my-3 justify-center mb-4">
+                <button
+                  onClick={() => navegate(`/editarcontacto/${contacto.id}`)}
+                  className="bg-green-500 text-white p-2 rounded-md hover:scale-110"
                 >
-                  Contactar
-                </Link>
+                  Editar
+                </button>
+                <button
+                  className="bg-red-500 text-white p-2 rounded-md hover:scale-110"
+                  onClick={() => {
+                    eliminarContacto(contacto.id);
+                  }}
+                >
+                  Eliminar
+                </button>
               </div>
+              <Link
+                to={`https://wa.me/+599${contacto.telefono}?text=Hola,%20${contacto.nombre}%20como%20estás`}
+                target="_blank"
+                className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md mt-3 hover:scale-110 mx-auto"
+              >
+                Contactar
+              </Link>
             </div>
           </div>
+        </div>
+        <div className="flex flex-column col-10 col-md-5 py-5 bg-orange-200 border-5  border-green-500">
+          <p className="text-3xl font-bold ">Fecha: </p>
+          <p className="text-3xl font-normal text-center">{contacto.fecha}</p>
+          <p className="text-3xl font-bold mb-2">Descripcion:</p>
+          {contacto.descripcion ? (
+            <h5 className="text-3xl font-normal text-center capitalize">
+              {contacto.descripcion}
+            </h5>
+          ) : (
+            ""
+          )}
         </div>
       </div>
 

@@ -4,7 +4,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Navegador from "../components/Navegador";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-import Header from '../components/Header';
+import Header from "../components/Header";
 
 const AgregarReserva = () => {
   const navegate = useNavigate();
@@ -16,7 +16,7 @@ const AgregarReserva = () => {
 
   return (
     <>
-    <Header />
+      <Header />
       <div className="h-[calc(80vh-53px)] bg-slate-700 flex items-center justify-center">
         <Formik
           initialValues={{
@@ -37,24 +37,23 @@ const AgregarReserva = () => {
               values.seña
             );
             // const { nombre, telefono, fecha, hora, servicio, seña } = values;
-              values.fecha = values.fecha.split('-');
-              let año = values.fecha[0];
-              let mes = values.fecha[1];
-              let dia = values.fecha[2];
-              values.fecha = `${año}/${mes}/${dia}`;
+            values.fecha = values.fecha.split("-");
+            let año = values.fecha[0];
+            let mes = values.fecha[1];
+            let dia = values.fecha[2];
+            values.fecha = `${año}/${mes}/${dia}`;
             axios
-            .post("http://localhost:3000/clientes", values)
-            .then((response)=>{
-              Notify.success("Reserva agregada con éxito");
-              console.log(response.data)
-              console.log(values)
-              resetForm();
-            })
-            .catch((error) => {
-              console.error("Error al agregar la reserva:", error);
-              Notify.failure("Error al agregar la reserva");
-            });
-            
+              .post("http://localhost:3000/clientes", values)
+              .then((response) => {
+                Notify.success("Reserva agregada con éxito");
+                console.log(response.data);
+                console.log(values);
+                resetForm();
+              })
+              .catch((error) => {
+                console.error("Error al agregar la reserva:", error);
+                Notify.failure("Error al agregar la reserva");
+              });
           }}
           validate={(values) => {
             const error = {};
@@ -145,6 +144,14 @@ const AgregarReserva = () => {
               name="seña"
               className="text-danger"
               style={"color:red"}
+            />
+
+            <Field
+              name="descripcion"
+              type="tex"
+              placeholder="Descripcion"
+              className="p-1 ps-3 w-60 rounded-full border-2"
+              
             />
 
             <button
