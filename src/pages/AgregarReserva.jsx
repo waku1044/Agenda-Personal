@@ -73,7 +73,7 @@ const AgregarReserva = () => {
         >
           {/* flex flex-col gap-3 items-center justify-center p-10 mt-0 */}
           <Form className="grid grid-cols-1 sm:grid-cols-2 gap-3  w-3/4 mx-auto p-4 rounded-lg  sm:mt-16">
-            <div className="flex justify-center">
+            <div className="flex flex-column items-center justify-center">
               <Field
                 name="nombre"
                 placeholder="Nombre"
@@ -87,7 +87,7 @@ const AgregarReserva = () => {
               )}
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex flex-column items-center  justify-center">
               <Field
                 name="telefono"
                 placeholder="Telefono"
@@ -149,7 +149,7 @@ const AgregarReserva = () => {
               />
             </div>
 
-            <div className="flex justify-center">
+            <div className="flex flex-column items-center justify-center">
               <Field
                 name="seña"
                 type="number"
