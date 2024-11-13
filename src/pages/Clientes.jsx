@@ -1,36 +1,56 @@
 import { useState, useEffect } from "react";
-import { Link, useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import avatar from "../assets/img/avatarContact.png";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Navegador from "../components/Navegador";
 import Header from "../components/Header";
 import ItemContacto from "../components/ItemContacto";
+import Buscador from "../components/Buscador"; // Importamos el componente de búsqueda
 
 const Clientes = () => {
-  const navegate = useNavigate();
-  const [reservados, setReservados] = useState([]);
-  const id = useParams().id;
-  const [contacto, setContacto] = useState({});
+  const navigate = useNavigate();
+  const [reservados, setReservados] = useState([]); // Lista completa de clientes
+  const [resultado, setResultado] = useState([]); // Resultados filtrados
+  const [busqueda, setBusqueda] = useState(""); // Estado para el valor de búsqueda
+
+  // Obtener datos de clientes desde la API (o almacenamiento local si es necesario)
   useEffect(() => {
-    const data = JSON.parse(localStorage.getItem("data"));
     axios
-      .get("http://localhost:3000/clientes")
+      .get("http://localhost:3000/clientes") // Cambia la URL según tu API
       .then((res) => {
-        setReservados(res.data);
-        // console.log(res.data)
+        setReservados(res.data); // Guardamos todos los clientes
+        setResultado(res.data); // Inicialmente mostramos todos los clientes
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
+        Notify.failure("Error al cargar los clientes.");
       });
   }, []);
 
+  // Manejar la búsqueda y filtrar los clientes
+  const manejarBusqueda = (query) => {
+    setBusqueda(query); // Actualizamos el valor de búsqueda
+
+    if (query === "") {
+      setResultado(reservados); // Si no hay búsqueda, mostramos todos los clientes
+    } else {
+      const filteredClients = reservados.filter((cliente) =>
+        cliente.nombre.toLowerCase().includes(query.toLowerCase()) // Filtramos por nombre
+      );
+      setResultado(filteredClients); // Actualizamos los resultados con los clientes filtrados
+    }
+  };
+  
   return (
     <>
-    <Header />  
+      <Header onSearch={manejarBusqueda}/> {/* Aquí puedes integrar el Buscador en Header, o pasar la función de búsqueda al Header */}
+    {/* Componente Buscador que maneja el input y filtra */}
+    {/* <Buscador onSearch={manejarBusqueda} /> */}
+      
       <div>
         <section
-          className=" flex-column  h-[calc(80vh-53px)] flex-wrap  justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
+          className="flex-column h-[calc(80vh-53px)] flex-wrap justify-around items-center content-start overflow-auto sm:justify-normal sm:content-none bg-slate-600"
           style={{
             background:
               "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,212,255,1) 100%)",
@@ -40,13 +60,14 @@ const Clientes = () => {
             Lista de Clientes
           </h1>
 
-          <div className="flex flex-col items-center justify-center gap-2 md:flex-wrap md:flex-row  w-75 mx-auto md:gap-4">
-            {reservados.length == 0 ? (
+
+          <div className="flex flex-col items-center justify-center gap-2 md:flex-wrap md:flex-row w-75 mx-auto md:gap-4">
+            {resultado.length === 0 ? (
               <h1 className="text-3xl text-slate-200 text-center font-bold mx-auto ">
-                No hay Clientes
+                No hay clientes que coincidan con la búsqueda.
               </h1>
             ) : (
-              reservados.map((cliente, index) => (
+              resultado.map((cliente, index) => (
                 <ItemContacto key={index} cliente={cliente} />
               ))
             )}

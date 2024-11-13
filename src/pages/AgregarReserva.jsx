@@ -17,7 +17,7 @@ const AgregarReserva = () => {
   return (
     <>
       <Header />
-      <div className="h-[calc(80vh-53px)] bg-slate-700 flex items-center justify-center">
+      <div className="h-[calc(80vh-53px)] bg-slate-700 flex items-center justify-center overflow-auto">
         <Formik
           initialValues={{
             nombre: "",
@@ -64,9 +64,7 @@ const AgregarReserva = () => {
             if (!values.telefono) {
               error.telefono = "El telefono es requerido";
             }
-            if (!/^\d+$/.test(values.telefono)) {
-              error.telefono = "El telefono debe ser numerico";
-            }
+            
 
             return error;
           }}
@@ -81,7 +79,8 @@ const AgregarReserva = () => {
               className="p-1 ps-3 w-60 rounded-full border-2"
               required
             />
-            <ErrorMessage name="nombre" className="text-danger" />
+            {<ErrorMessage name="nombre"  />&& <p className="text-danger"><ErrorMessage name="nombre"  /></p>}
+            
 
             <Field
               name="telefono"
@@ -89,7 +88,8 @@ const AgregarReserva = () => {
               className="p-1 ps-3 w-60 rounded-full border-2"
               required
             />
-            <ErrorMessage name="telefono" className="text-danger" />
+            {<ErrorMessage name="telefono"  />&& <p className="text-danger"><ErrorMessage name="telefono"  /></p>}
+            
 
             <Field
               as="select"
@@ -140,11 +140,7 @@ const AgregarReserva = () => {
               className="p-1 ps-3 w-60 rounded-full border-2"
               required
             />
-            <ErrorMessage
-              name="seña"
-              className="text-danger"
-              style={"color:red"}
-            />
+            {<ErrorMessage name="seña"  />&& <p className="text-danger"><ErrorMessage name="seña" /></p>}
 
             <Field
               name="descripcion"

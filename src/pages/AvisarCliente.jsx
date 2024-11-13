@@ -41,18 +41,16 @@ const AvisarCliente = () => {
     <div>
       <Header />
       <section className="h-[calc(80vh-53px)] flex flex-col gap-6 content-start overflow-auto sm:justify-normal sm:content-none" style={{
-          background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,100,100,1) 100%)",
+          background: "linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(9,9,121,1) 35%, rgba(0,100,100,1) 100%)"
         }}>
         <h1 className="text-3xl text-center my-5 text-green-500 font-bold mx-auto">
           Avisar Cliente
         </h1>
         <table className="table table-success table-bordered border-primary text-center table-striped">
-          <thead>
-            <tr className="border bg-green-300">
+          <thead className="border bg-green-300 py-3">
               <th scope="col">Cliente</th>
               <th scope="col">Avisar</th>
               <th scope="col">Acción</th>
-            </tr>
           </thead>
           <tbody>
             {clientes.length === 0 ? (
