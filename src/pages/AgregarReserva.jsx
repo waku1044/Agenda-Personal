@@ -17,7 +17,10 @@ const AgregarReserva = () => {
   return (
     <>
       <Header />
-      <div className="h-[calc(80vh-53px)] bg-slate-700 flex items-center justify-center overflow-auto">
+      <div className="h-[calc(80vh-53px)] bg-slate-700 flex-colum items-center justify-center overflow-auto">
+        <h2 className="text-3xl text-center font-bold text-green-500">
+          Agregar Reserva
+        </h2>
         <Formik
           initialValues={{
             nombre: "",
@@ -64,98 +67,120 @@ const AgregarReserva = () => {
             if (!values.telefono) {
               error.telefono = "El telefono es requerido";
             }
-            
 
             return error;
           }}
         >
-          <Form className="flex flex-col gap-3 items-center justify-center p-10 mt-0 ">
-            <h2 className="text-xl font-bold text-green-500">
-              Agregar Reserva
-            </h2>
-            <Field
-              name="nombre"
-              placeholder="Nombre"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            />
-            {<ErrorMessage name="nombre"  />&& <p className="text-danger"><ErrorMessage name="nombre"  /></p>}
-            
+          {/* flex flex-col gap-3 items-center justify-center p-10 mt-0 */}
+          <Form className="grid grid-cols-1 sm:grid-cols-2 gap-3  w-3/4 mx-auto p-4 rounded-lg  sm:mt-16">
+            <div className="flex justify-center">
+              <Field
+                name="nombre"
+                placeholder="Nombre"
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              />
+              {<ErrorMessage name="nombre" /> && (
+                <p className="text-danger text-center">
+                  <ErrorMessage name="nombre" />
+                </p>
+              )}
+            </div>
 
-            <Field
-              name="telefono"
-              placeholder="Telefono"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            />
-            {<ErrorMessage name="telefono"  />&& <p className="text-danger"><ErrorMessage name="telefono"  /></p>}
-            
+            <div className="flex justify-center">
+              <Field
+                name="telefono"
+                placeholder="Telefono"
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              />
+              {<ErrorMessage name="telefono" /> && (
+                <p className="text-danger text-center">
+                  <ErrorMessage name="telefono" />
+                </p>
+              )}
+            </div>
 
-            <Field
-              as="select"
-              name="servicio"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            >
-              <option disabled value="">
-                Servicio
-              </option>
-              <option value="Clasicas">Clasicas</option>
-              <option value="Hawaianas">Hawaianas</option>
-              <option value="Rimel">Rimel</option>
-              <option value="Volumen">Volumen</option>
-              <option value="Wispy">Wispy</option>
-              <option value="MegaVolumen">MegaVolumen</option>
-              <option value="Liffting">Liffting</option>
-              <option value="Diseño / Perfilado de cejas">
-                Diseño / Perfilado de cejas
-              </option>
-              <option value="Diseño / Perfilado / Laminado de cejas">
-                Diseño / Perfilado / Laminado de cejas
-              </option>
-              <option value="Masajes Sedativos">Masajes Sedativos</option>
-              <option value="Masajes Reductores">Masajes Reductores</option>
-              <option value="Depilación">Depilación</option>
-            </Field>
+            <div className="flex justify-center">
+              <Field
+                as="select"
+                name="servicio"
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              >
+                <option disabled value="">
+                  Servicio
+                </option>
+                <option value="Clasicas">Clasicas</option>
+                <option value="Hawaianas">Hawaianas</option>
+                <option value="Rimel">Rimel</option>
+                <option value="Volumen">Volumen</option>
+                <option value="Wispy">Wispy</option>
+                <option value="MegaVolumen">MegaVolumen</option>
+                <option value="Liffting">Liffting</option>
+                <option value="Diseño / Perfilado de cejas">
+                  Diseño / Perfilado de cejas
+                </option>
+                <option value="Diseño / Perfilado / Laminado de cejas">
+                  Diseño / Perfilado / Laminado de cejas
+                </option>
+                <option value="Masajes Sedativos">Masajes Sedativos</option>
+                <option value="Masajes Reductores">Masajes Reductores</option>
+                <option value="Depilación">Depilación</option>
+              </Field>
+            </div>
 
-            <Field
-              name="fecha"
-              type="date"
-              min={fechaMinima}
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            />
+            <div className="flex justify-center">
+              <Field
+                name="fecha"
+                type="date"
+                min={fechaMinima}
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              />
+            </div>
 
-            <Field
-              name="hora"
-              type="time"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            />
+            <div className="flex justify-center">
+              <Field
+                name="hora"
+                type="time"
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              />
+            </div>
 
-            <Field
-              name="seña"
-              type="number"
-              placeholder="Seña"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              required
-            />
-            {<ErrorMessage name="seña"  />&& <p className="text-danger"><ErrorMessage name="seña" /></p>}
+            <div className="flex justify-center">
+              <Field
+                name="seña"
+                type="number"
+                placeholder="Seña"
+                className="p-1 ps-3 w-60 rounded-full border-2"
+                required
+              />
+              {<ErrorMessage name="seña" /> && (
+                <p className="text-danger text-center">
+                  <ErrorMessage name="seña" />
+                </p>
+              )}
+            </div>
 
-            <Field
-              name="descripcion"
-              type="tex"
-              placeholder="Descripcion"
-              className="p-1 ps-3 w-60 rounded-full border-2"
-              
-            />
+            <div className="flex justify-center sm:col-span-2">
+              <Field
+                name="descripcion"
+                component="textarea"
+                placeholder="Descripción"
+                className="p-1 ps-3  border-2 w-75  "
+              />
+            </div>
 
-            <button
-              type="submit"
-              className="bg-gradient-to-tr from-green-400 from-10% via-green-500 via-30% to-blue-600 to-90%  shadow-inherit	 text-dark font-semibold tracking-wide border-0 p-1 ps-3 w-60 rounded-md"
-            >
-              Agregar
-            </button>
+            <div className="flex justify-center sm:col-span-2">
+              <button
+                type="submit"
+                className="bg-gradient-to-tr from-green-400 from-10% via-green-500 via-30% to-blue-600 to-90%  shadow-inherit	 text-dark font-semibold tracking-wide border-0 p-1 ps-3 w-60 rounded-md"
+              >
+                Agregar
+              </button>
+            </div>
           </Form>
         </Formik>
       </div>
