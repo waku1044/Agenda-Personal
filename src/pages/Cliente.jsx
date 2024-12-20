@@ -14,7 +14,7 @@ const Cliente = () => {
   useEffect(() => {
     // console.log(`Este es el id que va a buscar ${id}`)
     axios
-      .get(`http://127.0.0.1:5000/api/clientes`)
+      .get(`https://back-agenda-fedra.vercel.app/api/clientes`)
       .then(async (res) => {
         const result = await res.data;
         const clienteEncontrado = result.find((cliente) => cliente._id == id);
@@ -32,7 +32,7 @@ const Cliente = () => {
   const eliminarContacto = (id) => {
     
     axios
-      .delete(`http://127.0.0.1:5000/api/eliminarcontacto/${id}`)
+      .delete(`https://back-agenda-fedra.vercel.app/api/eliminarcontacto/${id}`)
       .then(async (res) => {
         Notify.success("Contacto Eliminado Correctamente");
         navegate("/clientes");

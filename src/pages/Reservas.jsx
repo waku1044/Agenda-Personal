@@ -36,7 +36,7 @@ const Reservas = () => {
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("data"));
     axios
-      .get("http://127.0.0.1:5000/api/clientes")
+      .get("https://back-agenda-fedra.vercel.app/api/clientes")
       .then((res) => {
         setReservados(res.data);
       })

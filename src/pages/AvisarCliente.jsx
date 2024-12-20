@@ -28,7 +28,7 @@ const AvisarCliente = () => {
 
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/api/clientes")
+      .get("https://back-agenda-fedra.vercel.app/api/clientes")
       .then((res) => {
         setClientes(res.data);
       })

@@ -14,7 +14,7 @@ const Perfil  = () => {
             // console.log(id)
             const data = JSON.parse(localStorage.getItem("data"));
             
-            axios.get("http://localhost:3900/api/perfil/" + id,{
+            axios.get("https://back-agenda-fedra.vercel.app/api/perfil/" + id,{
                 headers:{
                     Authorization: "Bearer " + data.token,
                 }

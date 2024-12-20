@@ -46,7 +46,7 @@ const AgregarReserva = () => {
             let dia = values.fecha[2];
             values.fecha = `${año}-${mes}-${dia}`;
             axios
-              .post("http://127.0.0.1:5000/api/agregarcontacto", values)
+              .post("https://back-agenda-fedra.vercel.app/api/agregarcontacto", values)
               .then((response) => {
                 Notify.success("Reserva agregada con éxito");
                 console.log(response.data);

@@ -15,7 +15,7 @@ const EditarContacto = () => {
   useEffect(() => {
     // console.log(`Este es el id que va a buscar ${id}`)
     axios
-      .get(`http://127.0.0.1:5000/api/clientes/`)
+      .get(`https://back-agenda-fedra.vercel.app/api/clientes/`)
       .then(async (res) => {
         const result = await res.data;
         const clienteEncontrado = result.find((cliente) => cliente._id == id);
@@ -45,7 +45,7 @@ const EditarContacto = () => {
             const { nombre, telefono, descripcion, fecha } = contacto;
             
             try {
-              const res = await axios.put(`http://127.0.0.1:5000/api/editarcontacto/${id}`, {
+              const res = await axios.put(`https://back-agenda-fedra.vercel.app/api/editarcontacto/${id}`, {
                 nombre,
                 telefono,
                 descripcion,

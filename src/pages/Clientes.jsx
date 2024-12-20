@@ -17,7 +17,7 @@ const Clientes = () => {
   // Obtener datos de clientes desde la API (o almacenamiento local si es necesario)
   useEffect(() => {
     axios
-      .get("http://127.0.0.1:5000/api/clientes") // Cambia la URL según tu API
+      .get("https://back-agenda-fedra.vercel.app/api/clientes") // Cambia la URL según tu API
       .then((res) => { 
          setReservados(res.data); // Guardamos todos los clientes
          setResultado(res.data); // Inicialmente mostramos todos los clientes
