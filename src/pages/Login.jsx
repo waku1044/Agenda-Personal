@@ -2,7 +2,6 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
-
 import eyeOpen from "../assets/img/eyeOpen.svg";
 import eyeClose from "../assets/img/eyeClose.svg";
 import Logo from "../assets/img/logo.png";
@@ -37,28 +36,22 @@ const Login = () => {
             // mongodb://127.0.0.1:27017/
             console.log(username, password);
             Loading.dots("Cargando...");
-            axios.post("https://back-agenda-fedra.vercel.app/api/login/", {
-              username,
-              password,
-            })
-            .then((res) => {
-                
+            axios
+              .post("https://back-agenda-fedra.vercel.app/api/login/", {
+                username,
+                password,
+              })
+              .then((res) => {
                 console.log(res);
-                setTimeout(() => {
-                    Loading.remove();
-                    Notify.success(`Bienvenida ${username.toUpperCase()}`);
-                    navegate("/reservas");
-                }, 3000);
 
-            }).catch((err) => {
-              setTimeout(() => {
                 Loading.remove();
-                Notify.failure('Usuario o contraseña incorrectos');
-                
-              }, 2000);
-                
-
-            })
+                Notify.success(`Bienvenida ${username.toUpperCase()}`);
+                navegate("/reservas");
+              })
+              .catch((err) => {
+                Loading.remove();
+                Notify.failure("Usuario o contraseña incorrectos");
+              });
             // axios.post("http://localhost:5000/api/login", {
             //     username,
             //     password,
@@ -67,13 +60,12 @@ const Login = () => {
             //     Loading.remove();
             //     console.log(res);
 
-              
             // })
             // .catch((err) => {
             //   Loading.remove();
             //   console.log(username, password);
             //   Notify.failure(err.response.data.error);
-              
+
             // });
             // if (username == "Fedra" && password == "Fedra10") {
             //   setTimeout(() => {
