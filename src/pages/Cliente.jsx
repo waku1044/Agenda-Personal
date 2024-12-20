@@ -14,10 +14,10 @@ const Cliente = () => {
   useEffect(() => {
     // console.log(`Este es el id que va a buscar ${id}`)
     axios
-      .get(`http://localhost:3000/clientes/`)
+      .get(`http://127.0.0.1:5000/api/clientes`)
       .then(async (res) => {
         const result = await res.data;
-        const clienteEncontrado = result.find((cliente) => cliente.id == id);
+        const clienteEncontrado = result.find((cliente) => cliente._id == id);
         if (clienteEncontrado) {
           setContacto(clienteEncontrado);
         } else {
@@ -30,9 +30,9 @@ const Cliente = () => {
   }, []);
 
   const eliminarContacto = (id) => {
-    console.log(id);
+    
     axios
-      .delete(`http://localhost:3000/clientes/${id}`)
+      .delete(`http://127.0.0.1:5000/api/eliminarcontacto/${id}`)
       .then(async (res) => {
         Notify.success("Contacto Eliminado Correctamente");
         navegate("/clientes");
@@ -69,7 +69,7 @@ const Cliente = () => {
 
               <div className="flex gap-3 my-3 justify-center mb-4">
                 <button
-                  onClick={() => navegate(`/editarcontacto/${contacto.id}`)}
+                  onClick={() => navegate(`/editarcontacto/${contacto._id}`)}
                   className="bg-green-500 text-white p-2 rounded-md hover:scale-110"
                 >
                   Editar
@@ -77,14 +77,14 @@ const Cliente = () => {
                 <button
                   className="bg-red-500 text-white p-2 rounded-md hover:scale-110"
                   onClick={() => {
-                    eliminarContacto(contacto.id);
+                    eliminarContacto(contacto._id);
                   }}
                 >
                   Eliminar
                 </button>
               </div>
               <Link
-                to={`https://wa.me/+599${contacto.telefono}?text=Hola,%20${contacto.nombre}%20como%20estás`}
+                to={`https://wa.me/+599${contacto.telefono}?text=Hola%20${contacto.nombre},%20como%20estás?`}
                 target="_blank"
                 className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md mt-3 hover:scale-110 mx-auto"
               >
@@ -95,7 +95,7 @@ const Cliente = () => {
         </div>
         <div className="flex flex-column col-10 col-md-5 py-5 bg-orange-200 border-5  border-green-500">
           <p className="text-3xl font-bold ">Fecha: </p>
-          <p className="text-3xl font-normal text-center">{contacto.fecha}</p>
+          <p className="text-3xl font-normal text-center mb-5">{contacto.fecha}</p>
           <p className="text-3xl font-bold mb-2">Descripcion:</p>
           {contacto.descripcion ? (
             <h5 className="text-3xl font-normal text-center capitalize">

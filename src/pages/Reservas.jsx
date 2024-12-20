@@ -24,7 +24,7 @@ const Reservas = () => {
       lunes.setDate(hoy.getDate() + 1);
     } else {
       lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
-      console.log(lunes);
+      
     }
     let sabado = new Date(lunes);
     sabado.setDate(lunes.getDate() + 5); // Calcula el domingo de la misma semana
@@ -36,7 +36,7 @@ const Reservas = () => {
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("data"));
     axios
-      .get("http://localhost:3000/clientes")
+      .get("http://127.0.0.1:5000/api/clientes")
       .then((res) => {
         setReservados(res.data);
       })
@@ -54,7 +54,7 @@ const Reservas = () => {
   }
 
   function fechaDeSemana(fechaNumero) {
-    console.log(fechaNumero)
+    
     let diasDeSemana = [
       "Domingo",
       "Lunes",
@@ -77,7 +77,7 @@ const Reservas = () => {
     let diaInicio = fechaInicio[0];
     let mesInicio = fechaInicio[1];
     let añoInicio = fechaInicio[2];
-    let fechaReves = `${añoInicio}/${mesInicio}/${diaInicio}`;
+    let fechaReves = `${añoInicio}-${mesInicio}-${diaInicio}`;
     return fechaReves;
   }
 

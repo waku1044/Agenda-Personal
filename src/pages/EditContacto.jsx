@@ -15,11 +15,12 @@ const EditarContacto = () => {
   useEffect(() => {
     // console.log(`Este es el id que va a buscar ${id}`)
     axios
-      .get(`http://localhost:3000/clientes/`)
+      .get(`http://127.0.0.1:5000/api/clientes/`)
       .then(async (res) => {
         const result = await res.data;
-        const clienteEncontrado = result.find((cliente) => cliente.id == id);
+        const clienteEncontrado = result.find((cliente) => cliente._id == id);
         if (clienteEncontrado) {
+          console.log(clienteEncontrado);
           setContacto(clienteEncontrado);
         } else {
           setContacto(null);
@@ -37,25 +38,34 @@ const EditarContacto = () => {
           initialValues={{
             nombre: "",
             telefono: "",
+            descripcion : "",
+            fecha : ""
           }}
           onSubmit={async (values) => {
-            console.log(contacto);
-            const res = await axios
-              .put(`http://localhost:3000/clientes/${id}`, contacto)
-              .then((res) => {
-                console.log(res);
-                Notify.success("Se edito correctamente");
-                navegate("/clientes");
-              })
-              .catch((err) => {
-                console.log(err);
-                Notify.failure(err.response.data.messenger);
+            const { nombre, telefono, descripcion, fecha } = contacto;
+            
+            try {
+              const res = await axios.put(`http://127.0.0.1:5000/api/editarcontacto/${id}`, {
+                nombre,
+                telefono,
+                descripcion,
+                fecha
               });
+            
+              
+              Notify.success("Se editó correctamente");
+              navegate("/clientes");
+            
+            } catch (err) {
+              console.log(err);
+              Notify.failure(err.response?.data?.messenger || "Error desconocido");
+            }
+            
           }}
           validate={(values) => {
             const error = {};
             // Validación para el nombre
-            console.log(contacto.nombre)
+            
             if (typeof contacto.nombre !== "string" ||
               !/^[a-zA-Z\s]+$/.test(contacto.nombre)
             ) {
@@ -102,6 +112,18 @@ const EditarContacto = () => {
               }
             />
             <p className="text-red-500"><ErrorMessage name="telefono" /></p>
+
+            <Field
+              name="fecha"
+              type="date"
+              className="p-1 ps-3 w-60 rounded-full border-2"
+              value={contacto.fecha}
+              required
+              onChange={(e) =>
+                setContacto({ ...contacto, fecha: e.target.value })
+              }
+            />
+            <p className="text-red-500"><ErrorMessage name="fecha" /></p>
 
             <Field
               type="textarea"

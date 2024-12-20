@@ -44,13 +44,14 @@ const AgregarReserva = () => {
             let año = values.fecha[0];
             let mes = values.fecha[1];
             let dia = values.fecha[2];
-            values.fecha = `${año}/${mes}/${dia}`;
+            values.fecha = `${año}-${mes}-${dia}`;
             axios
-              .post("http://localhost:3000/clientes", values)
+              .post("http://127.0.0.1:5000/api/agregarcontacto", values)
               .then((response) => {
                 Notify.success("Reserva agregada con éxito");
                 console.log(response.data);
                 console.log(values);
+                navegate("/reservas");
                 resetForm();
               })
               .catch((error) => {
@@ -134,6 +135,7 @@ const AgregarReserva = () => {
               <Field
                 name="fecha"
                 type="date"
+                placeholder="Fecha"
                 min={fechaMinima}
                 className="p-1 ps-3 w-60 rounded-full border-2"
                 required
@@ -144,6 +146,7 @@ const AgregarReserva = () => {
               <Field
                 name="hora"
                 type="time"
+                placerholder="Hora"
                 className="p-1 ps-3 w-60 rounded-full border-2"
                 required
               />
@@ -164,12 +167,12 @@ const AgregarReserva = () => {
               )}
             </div>
 
-            <div className="flex justify-center sm:col-span-2">
+            <div className="flex justify-center sm:col-span-2 overflow-auto">
               <Field
                 name="descripcion"
                 component="textarea"
                 placeholder="Descripción"
-                className="p-1 ps-3  border-2 w-75  "
+                className="p-1 ps-3  border-5 border-zinc-950 w-75  overflow-auto"
               />
             </div>
 

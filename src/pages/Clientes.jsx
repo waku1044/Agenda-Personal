@@ -17,10 +17,10 @@ const Clientes = () => {
   // Obtener datos de clientes desde la API (o almacenamiento local si es necesario)
   useEffect(() => {
     axios
-      .get("http://localhost:3000/clientes") // Cambia la URL según tu API
-      .then((res) => {
-        setReservados(res.data); // Guardamos todos los clientes
-        setResultado(res.data); // Inicialmente mostramos todos los clientes
+      .get("http://127.0.0.1:5000/api/clientes") // Cambia la URL según tu API
+      .then((res) => { 
+         setReservados(res.data); // Guardamos todos los clientes
+         setResultado(res.data); // Inicialmente mostramos todos los clientes
       })
       .catch((err) => {
         console.error(err);

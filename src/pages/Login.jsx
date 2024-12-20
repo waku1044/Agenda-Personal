@@ -2,6 +2,7 @@ import { Formik, Form, Field, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 
+
 import eyeOpen from "../assets/img/eyeOpen.svg";
 import eyeClose from "../assets/img/eyeClose.svg";
 import Logo from "../assets/img/logo.png";
@@ -33,23 +34,63 @@ const Login = () => {
           onSubmit={(values) => {
             let { username, password } = values;
             console.log(username, password);
-
+            // mongodb://127.0.0.1:27017/
+            console.log(username, password);
             Loading.dots("Cargando...");
-            setTimeout(() => {
-            if(username == "Fedra" && password == "Fedra10"){
+            axios.post("http://127.0.0.1:5000/api/login/", {
+              username,
+              password,
+            })
+            .then((res) => {
+                
+                console.log(res);
+                setTimeout(() => {
+                    Loading.remove();
+                    Notify.success(`Bienvenida ${username.toUpperCase()}`);
+                    navegate("/reservas");
+                }, 3000);
+
+            }).catch((err) => {
+              setTimeout(() => {
                 Loading.remove();
-                Notify.success(`Bienvenid@ ${username.toUpperCase()}`);
-                navegate("/reservas"); 
-            }
-            else{
-                Loading.remove();
-                Notify.failure("Usuario o contraseña incorrectos");
-              }
-            }, 3000);
+                Notify.failure('Usuario o contraseña incorrectos');
+                
+              }, 2000);
+                
+
+            })
+            // axios.post("http://localhost:5000/api/login", {
+            //     username,
+            //     password,
+            //   })
+            //   .then((res) => {
+            //     Loading.remove();
+            //     console.log(res);
+
+              
+            // })
+            // .catch((err) => {
+            //   Loading.remove();
+            //   console.log(username, password);
+            //   Notify.failure(err.response.data.error);
+              
+            // });
+            // if (username == "Fedra" && password == "Fedra10") {
+            //   setTimeout(() => {
+            //     Loading.remove();
+            //     Notify.success(`Bienvenida ${username.toUpperCase()}`);
+            //     navegate("/reservas");
+            //   }, 3000);
+            // } else {
+            //   setTimeout(() => {
+            //   Loading.remove();
+            //   Notify.failure("Usuario o contraseña incorrectos");
+            // }, 3000);
+            // }
           }}
           validate={(values) => {
             const error = {};
-            console.log(!values.username === "");
+            // console.log(values.username);
             if (!values.username) {
               error.username = "El usuario es requerido";
             }
@@ -69,9 +110,9 @@ const Login = () => {
                 autoComplete="off"
               />
             </div>
-              <p className="text-red-600">
-                <ErrorMessage name="username" />
-              </p>
+            <p className="text-red-600">
+              <ErrorMessage name="username" />
+            </p>
 
             <div className="input-group relative pb-0">
               <Field
@@ -90,11 +131,10 @@ const Login = () => {
                 alt="eye"
                 className="absolute top-2 right-2  cursor-pointer"
               />
-
             </div>
-              <p className="text-red-600">
-                <ErrorMessage name="password" />
-              </p>
+            <p className="text-red-600">
+              <ErrorMessage name="password" />
+            </p>
 
             <button
               type="submit"
