@@ -15,7 +15,7 @@ const AvisarCliente = () => {
   function avisarCliente(fecha, nombre) {
     const fechaAviso = new Date(fechaInicioMas14dias(fecha));
     const hoy = new Date();
-    
+    console.log(fechaAviso, hoy);
     return hoy >= fechaAviso; // Retorna true si hoy es mayor o igual a la fecha de aviso
   }
 

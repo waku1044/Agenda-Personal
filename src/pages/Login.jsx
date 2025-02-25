@@ -15,6 +15,7 @@ const Login = () => {
   const [type, setType] = useState(false);
 
   const navegate = useNavigate();
+  // http://197.1.1.1:5000
   return (
     <>
       <div className="container-fluid pt-5">
@@ -36,6 +37,7 @@ const Login = () => {
             // mongodb://127.0.0.1:27017/
             console.log(username, password);
             Loading.dots("Cargando...");
+
             axios
               .post("https://back-agenda-fedra.vercel.app/api/login/", {
                 username,
@@ -49,36 +51,23 @@ const Login = () => {
                 navegate("/reservas");
               })
               .catch((err) => {
-                Loading.remove();
-                Notify.failure("Usuario o contraseña incorrectos");
-              });
-            // axios.post("http://localhost:5000/api/login", {
-            //     username,
-            //     password,
-            //   })
-            //   .then((res) => {
-            //     Loading.remove();
-            //     console.log(res);
+   Loading.remove();
+   if (err.response) {
+     // El servidor respondió con un error
+     console.log(err.response.data);
+     Notify.failure("Usuario o contraseña incorrectos");
+   } else if (err.request) {
+     // La solicitud fue hecha pero no se recibió respuesta
+     console.log(err.request);
+     Notify.failure("Error de conexión. Por favor, intenta de nuevo.");
+   } else {
+     // Ocurrió un error al configurar la solicitud
+     console.log('Error', err.message);
+     Notify.failure("Ocurrió un error inesperado.");
+   }
+ });
 
-            // })
-            // .catch((err) => {
-            //   Loading.remove();
-            //   console.log(username, password);
-            //   Notify.failure(err.response.data.error);
-
-            // });
-            // if (username == "Fedra" && password == "Fedra10") {
-            //   setTimeout(() => {
-            //     Loading.remove();
-            //     Notify.success(`Bienvenida ${username.toUpperCase()}`);
-            //     navegate("/reservas");
-            //   }, 3000);
-            // } else {
-            //   setTimeout(() => {
-            //   Loading.remove();
-            //   Notify.failure("Usuario o contraseña incorrectos");
-            // }, 3000);
-            // }
+            
           }}
           validate={(values) => {
             const error = {};

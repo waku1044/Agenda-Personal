@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import Navegador from "../components/Navegador";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Header from "../components/Header";
+import {cambioDeSigno, fechaAlReves, cambio_de_signo} from "../components/ManejoDeFecha";
 
 const AgregarReserva = () => {
   const navegate = useNavigate();
@@ -40,11 +41,14 @@ const AgregarReserva = () => {
               values.seña
             );
             // const { nombre, telefono, fecha, hora, servicio, seña } = values;
-            values.fecha = values.fecha.split("-");
-            let año = values.fecha[0];
-            let mes = values.fecha[1];
-            let dia = values.fecha[2];
-            values.fecha = `${año}-${mes}-${dia}`;
+            // console.log('Primera ',values.fecha);
+            // values.fecha = values.fecha.split("-");
+            // let año = values.fecha[0];
+            // let mes = values.fecha[1];
+            // let dia = values.fecha[2];
+            // values.fecha = `${año}/${mes}/${dia}`;
+            // console.log('Segunda ',values.fecha);
+            cambio_de_signo(values.fecha);
             axios
               .post("https://back-agenda-fedra.vercel.app/api/agregarcontacto", values)
               .then((response) => {

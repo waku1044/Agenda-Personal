@@ -3,34 +3,48 @@ import CardContactos from "../components/ItemContacto";
 import axios from "axios";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
 import Header from "../components/Header";
-
+import {
+  cambioDeSigno,
+  fechaAlReves,
+  cambio_de_signo,
+  siEstaEnRangoFecha,
+} from "../components/ManejoDeFecha";
 import Navegador from "../components/Navegador";
+import dayjs from "dayjs";
+import "dayjs/locale/es"; // Importa el idioma español correctamente
+import localeData from "dayjs/plugin/localeData";
+
+dayjs.extend(localeData);
+dayjs.locale("es"); // Configura el idioma español
+
+dayjs.extend(localeData);
 
 const Reservas = () => {
   const [reservados, setReservados] = useState([]);
   const [inicioSemana, setInicioSemana] = useState();
   const [finSemana, setFinSemana] = useState();
 
-  const [search, setSearch] = useState("");
+  dayjs.locale("es");
 
   useEffect(() => {
-    let hoy = new Date();
-    let actual = hoy.getDay();
+    // Obtener la fecha de hoy
+    let hoy = dayjs();
+    console.log('Linea 32' ,hoy)
 
-    // console.log(actual); // 0
-    // Ajustar para que el lunes sea el primer día de la semana
-    let lunes = new Date(hoy);
-    if (lunes.getDay() === 0) {
-      lunes.setDate(hoy.getDate() + 1);
-    } else {
-      lunes.setDate(hoy.getDate() - (actual === 0 ? 6 : actual - 1)); // Si hoy es domingo, retrocede 6 días
-      
+    // Calcular el primer día de la semana (lunes)
+    let lunes = hoy.startOf("week"); // Esto ajusta la fecha al lunes de la semana actual
+
+    // Si hoy es domingo, dayjs retornará el lunes del día anterior, así que ajustamos:
+    if (hoy.day() === 0) {
+      lunes = lunes.add(1, "day"); // Ajusta el lunes al siguiente día si es domingo
     }
-    let sabado = new Date(lunes);
-    sabado.setDate(lunes.getDate() + 5); // Calcula el domingo de la misma semana
 
-    setInicioSemana(lunes.toLocaleDateString());
-    setFinSemana(sabado.toLocaleDateString());
+    // Calcular el último día de la semana (sábado)
+    let sabado = lunes.add(5, "days"); // El sábado es 5 días después del lunes
+
+    // Establecer los valores de inicio y fin de la semana en el formato deseado
+    setInicioSemana(lunes.format("DD-MM-YYYY"));
+    setFinSemana(sabado.format("DD-MM-YYYY"));
   }, []);
 
   useEffect(() => {
@@ -39,48 +53,47 @@ const Reservas = () => {
       .get("https://back-agenda-fedra.vercel.app/api/clientes")
       .then((res) => {
         setReservados(res.data);
+        
       })
       .catch((err) => {
         console.log(err);
       });
   }, []);
 
-  function entraEnLaSemana(fechainicio) {
-    // console.log(inicioSemana, finSemana)
-    return (
-      fechainicio >= fechaInicialAlReves(inicioSemana) &&
-      fechainicio <= fechaInicialAlReves(finSemana)
-    );
-  }
+  // function entraEnLaSemana(fechainicio) {
+  //   // console.log(inicioSemana, finSemana)
+  //   console.log(
+  //     fechainicio >= fechaInicialAlReves(inicioSemana) &&
+  //     fechainicio <= fechaInicialAlReves(finSemana)
+  //   );
+  // };
 
   function fechaDeSemana(fechaNumero) {
-    
-    let diasDeSemana = [
-      "Domingo",
-      "Lunes",
-      "Martes",
-      "Miércoles",
-      "Jueves",
-      "Viernes",
-      "Sábado",
-    ];
-    // let fecha = fechaNumero.split("/")[0];
-    // let mes = fechaNumero.split("/")[1];
-    // let año = fechaNumero.split("/")[2];
-    // let fechaAlReves = `${año}/${mes}/${fecha}`;
-    let actual = new Date(fechaNumero);
-    return diasDeSemana[actual.getDay()];
+    // const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
+    // let actual = new Date(fechaNumero);
+
+    // console.log(actual,dias[actual.getDay()]);
+    // return dias[actual.getDay()] || "desconocido";
+    // Usamos dayjs para parsear la fecha con el formato correcto
+    console.log(fechaNumero);
+    const fechaFormateada = dayjs(fechaNumero, "DD-MM-YYYY");
+
+    // Obtener el día de la semana en formato largo (por ejemplo: 'Lunes', 'Martes', etc.)
+    const diaDeLaSemana = fechaFormateada.format("dddd");
+    console.log(diaDeLaSemana);
   }
 
-  function fechaAlReves(inicial) {
-    let fechaInicio = inicial.split("/");
-    let diaInicio = fechaInicio[0];
-    let mesInicio = fechaInicio[1];
-    let añoInicio = fechaInicio[2];
-    let fechaReves = `${añoInicio}-${mesInicio}-${diaInicio}`;
-    return fechaReves;
-  }
+  // let fecha = fechaNumero.split("-")[0];
+  // let mes = fechaNumero.split("-")[1];
+  // let año = fechaNumero.split("-")[2];
+  // let fechaAlReves = `${año}/${mes}/${fecha}`;
+  // console.log('fechaNumero',fechaAlReves);
+  // console.log('actual',actual);
+  // console.log('diasDeSemana',diasDeSemana[actual.getDay()]);
 
+  // return diasDeSemana[actual.getDay()];
+
+  // entraEnLaSemana(fechaAlReves(inicioSemana));
   return (
     <div>
       <Header />
@@ -112,68 +125,99 @@ const Reservas = () => {
 
             <tbody className="table-group-divider">
               {reservados.map((cliente, index) => {
+                console.log(cliente.fecha);
+                console.log(inicioSemana, finSemana);
                 if (
-                  new Date(cliente.fecha) >= new Date(fechaAlReves(inicioSemana)) &&
-                  new Date(cliente.fecha) <= new Date(fechaAlReves(finSemana)
-                )) {
-                 
+                  siEstaEnRangoFecha(
+                    console.log(cliente.fecha, cliente.nombre),
+                    cambioDeSigno(cliente.fecha),
+                    console.log(cliente.fecha),
+                    fechaAlReves(cambioDeSigno(inicioSemana)),
+                    cambioDeSigno(finSemana)
+                  )
+                ) {
                   return (
                     <tr className="border bg-green-300" key={index}>
-                      <th scope="row">{cliente.fecha}</th>
+                      <th scope="row">{cliente.fecha} </th>
                       <td>{cliente.hora}</td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Lunes"
-                          ? <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {console.log(cliente.fecha)}
+                        {fechaDeSemana(cliente.fecha) === "lunes" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Martes"
-                          ?   <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {fechaDeSemana(cliente.fecha) === "martes" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Miércoles"
-                          ? <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {fechaDeSemana(cliente.fecha) === "miércoles" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Jueves"
-                          ? <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {fechaDeSemana(cliente.fecha) === "jueves" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Viernes"
-                          ? <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {fechaDeSemana(cliente.fecha) === "viernes" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "Sábado"
-                          ? <><span>{cliente.nombre}</span>
-                          <br />  
-                          <span>{cliente.servicio}</span>
-                          <br />  
-                          <span>{cliente.seña}</span></>
-                          : ""}
+                        {fechaDeSemana(cliente.fecha) === "sábado" ? (
+                          <>
+                            <span>{cliente.nombre}</span>
+                            <br />
+                            <span>{cliente.servicio}</span>
+                            <br />
+                            <span>{cliente.seña}</span>
+                          </>
+                        ) : (
+                          ""
+                        )}
                       </td>
                     </tr>
                   );

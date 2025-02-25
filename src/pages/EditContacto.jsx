@@ -3,15 +3,24 @@ import { Link, useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Navegador from "../components/Navegador";
 import { Notify } from "notiflix/build/notiflix-notify-aio";
-
+import {cambioDeSigno, fechaAlReves, cambio_de_signo} from "../components/ManejoDeFecha";
 import { Formik, Form, Field, ErrorMessage } from "formik";
 
 const EditarContacto = () => {
   const [contacto, setContacto] = useState({});
   const navegate = useNavigate();
   const id = useParams().id;
-  
+  const [verFecha, setVerFecha] = useState("");
+  const [fechaMinima, setFechaMinima] = useState("");
 
+  useEffect(() => {
+    setFechaMinima(new Date().toISOString().split("T")[0]); // Obtiene la fecha de hoy en formato YYYY-MM-DD
+  }, []);
+
+
+ 
+
+ 
   useEffect(() => {
     // console.log(`Este es el id que va a buscar ${id}`)
     axios
@@ -20,8 +29,10 @@ const EditarContacto = () => {
         const result = await res.data;
         const clienteEncontrado = result.find((cliente) => cliente._id == id);
         if (clienteEncontrado) {
-          console.log(clienteEncontrado);
+          
+          setVerFecha(cambioDeSigno(clienteEncontrado.fecha));
           setContacto(clienteEncontrado);
+          // setVerFecha(fechaAlReves(clienteEncontrado.fecha));
         } else {
           setContacto(null);
         }
@@ -38,50 +49,53 @@ const EditarContacto = () => {
           initialValues={{
             nombre: "",
             telefono: "",
-            descripcion : "",
-            fecha : ""
+            descripcion: "",
+            fecha: "",
           }}
           onSubmit={async (values) => {
             const { nombre, telefono, descripcion, fecha } = contacto;
-            
+
             try {
-              const res = await axios.put(`https://back-agenda-fedra.vercel.app/api/editarcontacto/${id}`, {
-                nombre,
-                telefono,
-                descripcion,
-                fecha
-              });
-            
-              
+              const res = await axios.put(
+                `https://back-agenda-fedra.vercel.app/api/editarcontacto/${id}`,
+                {
+                  nombre,
+                  telefono,
+                  descripcion,
+                  fecha: cambio_de_signo(fecha)
+                }
+              );
+
               Notify.success("Se editó correctamente");
               navegate("/clientes");
-            
             } catch (err) {
               console.log(err);
-              Notify.failure(err.response?.data?.messenger || "Error desconocido");
+              Notify.failure(
+                err.response?.data?.messenger || "Error desconocido"
+              );
             }
-            
           }}
           validate={(values) => {
             const error = {};
             // Validación para el nombre
-            
-            if (typeof contacto.nombre !== "string" ||
+
+            if (
+              typeof contacto.nombre !== "string" ||
               !/^[a-zA-Z\s]+$/.test(contacto.nombre)
             ) {
               error.nombre = "Solo se admite letras";
             }
-            if(!contacto.nombre){
+            if (!contacto.nombre) {
               error.nombre = "El nombre es obligatorio";
             }
 
             // Validación para el teléfono
-              if (!/^\d+$/.test(contacto.telefono) ) {  
-                error.telefono = "El teléfono debe ser numérico";
-              }
-              if(!contacto.telefono){
-                error.telefono = "El telefono es obligatorio";
-              }
+            if (!/^\d+$/.test(contacto.telefono)) {
+              error.telefono = "El teléfono debe ser numérico";
+            }
+            if (!contacto.telefono) {
+              error.telefono = "El telefono es obligatorio";
+            }
             return error;
           }}
         >
@@ -99,7 +113,9 @@ const EditarContacto = () => {
                 setContacto({ ...contacto, nombre: e.target.value })
               }
             />
-            <p className="text-red-500"><ErrorMessage name="nombre" /></p>
+            <p className="text-red-500">
+              <ErrorMessage name="nombre" />
+            </p>
 
             <Field
               name="telefono"
@@ -111,19 +127,25 @@ const EditarContacto = () => {
                 setContacto({ ...contacto, telefono: e.target.value })
               }
             />
-            <p className="text-red-500"><ErrorMessage name="telefono" /></p>
+            <p className="text-red-500">
+              <ErrorMessage name="telefono" />
+            </p>
 
             <Field
               name="fecha"
               type="date"
               className="p-1 ps-3 w-60 rounded-full border-2"
-              value={contacto.fecha}
-              required
-              onChange={(e) =>
-                setContacto({ ...contacto, fecha: e.target.value })
-              }
+              value={verFecha}
+              min={fechaMinima}
+              
+              onChange={(e) => {
+                setContacto({ ...contacto, fecha: e.target.value }),
+                  setVerFecha(e.target.value);
+              }}
             />
-            <p className="text-red-500"><ErrorMessage name="fecha" /></p>
+            <p className="text-red-500">
+              <ErrorMessage name="fecha" />
+            </p>
 
             <Field
               type="textarea"

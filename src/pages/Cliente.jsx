@@ -84,7 +84,7 @@ const Cliente = () => {
                 </button>
               </div>
               <Link
-                to={`https://wa.me/+599${contacto.telefono}?text=Hola%20${contacto.nombre},%20como%20estás?`}
+                to={`https://wa.me/+549${contacto.telefono}?text=Hola%20${contacto.nombre},%20como%20estás?`}
                 target="_blank"
                 className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md mt-3 hover:scale-110 mx-auto"
               >
