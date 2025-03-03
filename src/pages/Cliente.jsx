@@ -30,7 +30,6 @@ const Cliente = () => {
   }, []);
 
   const eliminarContacto = (id) => {
-    
     axios
       .delete(`https://back-agenda-fedra.vercel.app/api/eliminarcontacto/${id}`)
       .then(async (res) => {
@@ -64,7 +63,7 @@ const Cliente = () => {
               <h1 className="card-title text-3xl font-bold capitalize">
                 {contacto.nombre}
               </h1>
-              <h3 className="text-3xl font-normal">{contacto.correo}</h3>
+              {/* <h3 className="text-3xl font-normal">{contacto.correo}</h3> */}
               <h4 className="text-3xl font-normal">{contacto.telefono}</h4>
 
               <div className="flex gap-3 my-3 justify-center mb-4">
@@ -86,7 +85,7 @@ const Cliente = () => {
               <Link
                 to={`https://wa.me/+549${contacto.telefono}?text=Hola%20${contacto.nombre},%20como%20estás?`}
                 target="_blank"
-                className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md mt-3 hover:scale-110 mx-auto"
+                className="bg-pink-300 text-dark-800 font-bold text-xl p-2 rounded-md  mt-2 hover:scale-110 mx-auto"
               >
                 Contactar
               </Link>
@@ -94,8 +93,23 @@ const Cliente = () => {
           </div>
         </div>
         <div className="flex flex-column col-10 col-md-5 py-5 bg-orange-200 border-5  border-green-500">
-          <p className="text-3xl font-bold ">Fecha: </p>
-          <p className="text-3xl font-normal text-center mb-5">{contacto.fecha}</p>
+          <div className="flex justify-between">
+            <div className="fecha">
+              <p className="text-3xl font-bold ">Fecha </p>
+              <p className="text-3xl font-normal text-center mb-5">
+                {contacto.fecha}
+              </p>
+            </div>
+            <div className="hora">
+              <p className="text-3xl font-bold ">Hora </p>
+              <p className="text-3xl font-normal text-center mb-5">
+                {contacto.hora} hs
+              </p>
+            </div>
+          </div>
+          <p className="text-3xl font-bold ">Seña </p>
+              <p className="text-3xl font-normal text-center mb-5">$ {contacto.seña}
+              </p>
           <p className="text-3xl font-bold mb-2">Descripcion:</p>
           {contacto.descripcion ? (
             <h5 className="text-3xl font-normal text-center capitalize">

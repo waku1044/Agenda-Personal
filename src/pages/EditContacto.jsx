@@ -12,9 +12,12 @@ const EditarContacto = () => {
   const id = useParams().id;
   const [verFecha, setVerFecha] = useState("");
   const [fechaMinima, setFechaMinima] = useState("");
+ 
 
   useEffect(() => {
     setFechaMinima(new Date().toISOString().split("T")[0]); // Obtiene la fecha de hoy en formato YYYY-MM-DD
+    
+
   }, []);
 
 
@@ -51,9 +54,11 @@ const EditarContacto = () => {
             telefono: "",
             descripcion: "",
             fecha: "",
+            hora: "",
+            seña: "",
           }}
           onSubmit={async (values) => {
-            const { nombre, telefono, descripcion, fecha } = contacto;
+            const { nombre, telefono, descripcion, fecha, hora, seña } = contacto;
 
             try {
               const res = await axios.put(
@@ -62,7 +67,9 @@ const EditarContacto = () => {
                   nombre,
                   telefono,
                   descripcion,
-                  fecha: cambio_de_signo(fecha)
+                  fecha,
+                  hora,
+                  seña
                 }
               );
 
@@ -135,16 +142,45 @@ const EditarContacto = () => {
               name="fecha"
               type="date"
               className="p-1 ps-3 w-60 rounded-full border-2"
-              value={verFecha}
-              min={fechaMinima}
+              value={contacto.fecha}
+              // min={fechaMinima}
               
               onChange={(e) => {
-                setContacto({ ...contacto, fecha: e.target.value }),
-                  setVerFecha(e.target.value);
+                setContacto({ ...contacto, fecha: e.target.value })
               }}
             />
             <p className="text-red-500">
               <ErrorMessage name="fecha" />
+            </p>
+
+            <Field
+              name="hora"
+              type="time"
+              className="p-1 ps-3 w-60 rounded-full border-2"
+              value={contacto.hora}
+              
+              
+              onChange={(e) => {
+                setContacto({ ...contacto, hora: e.target.value })
+              }}
+            />
+            <p className="text-red-500">
+              <ErrorMessage name="hora" />
+            </p>
+
+            <Field
+              name="seña"
+              type="number"
+              className="p-1 ps-3 w-60 rounded-full border-2"
+              value={contacto.seña}
+              
+              
+              onChange={(e) => {
+                setContacto({ ...contacto, seña: e.target.value })
+              }}
+            />
+            <p className="text-red-500">
+              <ErrorMessage name="seña" />
             </p>
 
             <Field

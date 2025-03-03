@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import {
   cambioDeSigno,
   fechaAlReves,
+  fecha_Al_Reves,
   cambio_de_signo,
   siEstaEnRangoFecha,
 } from "../components/ManejoDeFecha";
@@ -29,14 +30,14 @@ const Reservas = () => {
   useEffect(() => {
     // Obtener la fecha de hoy
     let hoy = dayjs();
-    console.log('Linea 32' ,hoy)
+    // console.log('Linea 32' ,hoy)
 
     // Calcular el primer día de la semana (lunes)
     let lunes = hoy.startOf("week"); // Esto ajusta la fecha al lunes de la semana actual
 
     // Si hoy es domingo, dayjs retornará el lunes del día anterior, así que ajustamos:
     if (hoy.day() === 0) {
-      lunes = lunes.add(1, "day"); // Ajusta el lunes al siguiente día si es domingo
+      lunes = lunes.add(0, "days"); // Ajusta el lunes al siguiente día si es domingo
     }
 
     // Calcular el último día de la semana (sábado)
@@ -49,6 +50,7 @@ const Reservas = () => {
 
   useEffect(() => {
     // const data = JSON.parse(localStorage.getItem("data"));
+    
     axios
       .get("https://back-agenda-fedra.vercel.app/api/clientes")
       .then((res) => {
@@ -60,40 +62,11 @@ const Reservas = () => {
       });
   }, []);
 
-  // function entraEnLaSemana(fechainicio) {
-  //   // console.log(inicioSemana, finSemana)
-  //   console.log(
-  //     fechainicio >= fechaInicialAlReves(inicioSemana) &&
-  //     fechainicio <= fechaInicialAlReves(finSemana)
-  //   );
-  // };
-
   function fechaDeSemana(fechaNumero) {
-    // const dias = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"];
-    // let actual = new Date(fechaNumero);
-
-    // console.log(actual,dias[actual.getDay()]);
-    // return dias[actual.getDay()] || "desconocido";
-    // Usamos dayjs para parsear la fecha con el formato correcto
-    console.log(fechaNumero);
-    const fechaFormateada = dayjs(fechaNumero, "DD-MM-YYYY");
-
-    // Obtener el día de la semana en formato largo (por ejemplo: 'Lunes', 'Martes', etc.)
-    const diaDeLaSemana = fechaFormateada.format("dddd");
-    console.log(diaDeLaSemana);
+    const diaDeLaSemana = dayjs(fechaAlReves(fechaNumero), "DD-MM-YYYY").format("dddd");
+    return diaDeLaSemana;
   }
-
-  // let fecha = fechaNumero.split("-")[0];
-  // let mes = fechaNumero.split("-")[1];
-  // let año = fechaNumero.split("-")[2];
-  // let fechaAlReves = `${año}/${mes}/${fecha}`;
-  // console.log('fechaNumero',fechaAlReves);
-  // console.log('actual',actual);
-  // console.log('diasDeSemana',diasDeSemana[actual.getDay()]);
-
-  // return diasDeSemana[actual.getDay()];
-
-  // entraEnLaSemana(fechaAlReves(inicioSemana));
+  
   return (
     <div>
       <Header />
@@ -107,8 +80,8 @@ const Reservas = () => {
         <h1 className="text-3xl text-center mt-5 text-green-500 font-bold mx-auto ">
           Reservas de esta Semana
         </h1>
-        <p className="text-center  fs-5 font-bold text-pink-400">
-          {inicioSemana} ___ {finSemana}{" "}
+        <p className="text-center fs-5 font-bold text-pink-400">
+          {inicioSemana} ___ {finSemana}
         </p>
         <div className="overflow-auto">
           <table className="table table-success table-bordered border-primary text-center table-striped">
@@ -117,32 +90,31 @@ const Reservas = () => {
               <th scope="col">Hora</th>
               <th scope="col">Lunes</th>
               <th scope="col">Martes</th>
-              <th scope="col">Miercoles</th>
+              <th scope="col">Miércoles</th>
               <th scope="col">Jueves</th>
               <th scope="col">Viernes</th>
-              <th scope="col">Sabado</th>
+              <th scope="col">Sábado</th>
             </thead>
-
+  
             <tbody className="table-group-divider">
               {reservados.map((cliente, index) => {
-                console.log(cliente.fecha);
-                console.log(inicioSemana, finSemana);
+                
+                const diaDeLaSemana = fechaDeSemana(cliente.fecha, cliente.nombre); // Llamamos una vez a la función y la almacenamos en una variable.
                 if (
                   siEstaEnRangoFecha(
-                    console.log(cliente.fecha, cliente.nombre),
-                    cambioDeSigno(cliente.fecha),
-                    console.log(cliente.fecha),
-                    fechaAlReves(cambioDeSigno(inicioSemana)),
-                    cambioDeSigno(finSemana)
+                    fecha_Al_Reves(cliente.fecha),
+                    inicioSemana,
+                    finSemana
                   )
+                  
                 ) {
+                  
                   return (
                     <tr className="border bg-green-300" key={index}>
-                      <th scope="row">{cliente.fecha} </th>
-                      <td>{cliente.hora}</td>
+                      <th scope="row">{fecha_Al_Reves(cliente.fecha)} </th>
+                      <td className="font-bold">{cliente.hora}</td>
                       <td className="capitalize">
-                        {console.log(cliente.fecha)}
-                        {fechaDeSemana(cliente.fecha) === "lunes" ? (
+                        {diaDeLaSemana === "lunes" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -150,12 +122,10 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "martes" ? (
+                        {diaDeLaSemana === "martes" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -163,12 +133,10 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "miércoles" ? (
+                        {diaDeLaSemana === "miércoles" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -176,12 +144,10 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "jueves" ? (
+                        {diaDeLaSemana === "jueves" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -189,12 +155,10 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "viernes" ? (
+                        {diaDeLaSemana === "viernes" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -202,12 +166,10 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                       <td className="capitalize">
-                        {fechaDeSemana(cliente.fecha) === "sábado" ? (
+                        {diaDeLaSemana === "sábado" && (
                           <>
                             <span>{cliente.nombre}</span>
                             <br />
@@ -215,8 +177,6 @@ const Reservas = () => {
                             <br />
                             <span>{cliente.seña}</span>
                           </>
-                        ) : (
-                          ""
                         )}
                       </td>
                     </tr>
@@ -230,6 +190,6 @@ const Reservas = () => {
       <Navegador />
     </div>
   );
-};
+            }
 
 export default Reservas;
