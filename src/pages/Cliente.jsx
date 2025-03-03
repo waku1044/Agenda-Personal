@@ -93,7 +93,7 @@ const Cliente = () => {
           </div>
         </div>
         <div className="flex flex-column col-10 col-md-5 py-5 bg-orange-200 border-5  border-green-500">
-          <div className="flex justify-between">
+          <div className="flex flex-column justify-between sm:flex-row">
             <div className="fecha">
               <p className="text-3xl font-bold ">Fecha </p>
               <p className="text-3xl font-normal text-center mb-5">
